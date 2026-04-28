@@ -1,0 +1,35 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Private MVP rules for a small trusted friend group with no authentication.
+    //
+    // These rules are intentionally permissive inside the rooms tree so the
+    // realtime game can work without accounts, passwords, custom claims, or a
+    // backend API. Anyone who knows a valid room code and has the deployed URL
+    // can read and write that room, so this is not production-grade security
+    // for a public app.
+    //
+    // Keep this permissive for room and player reads/lists/creates/updates:
+    // the app performs room joins, player fallback lookup, realtime player
+    // listing, transactions, and presence heartbeats from unauthenticated
+    // browser clients.
+    //
+    // For a public version, add real authentication and enforce host/player
+    // identity, phase-specific writes, and per-field validation.
+    match /rooms/{roomCode} {
+      allow read, create, update: if true;
+      allow delete: if false;
+
+      match /players/{playerId} {
+        allow read, create, update: if true;
+        allow delete: if false;
+      }
+    }
+
+    // Keep every unrelated collection closed.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
