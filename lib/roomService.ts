@@ -107,7 +107,8 @@ function readGameStatus(data: DocumentData): GameStatus {
     status === "lobby" ||
     status === "answering" ||
     status === "guessing" ||
-    status === "result"
+    status === "result" ||
+    status === "archived"
   ) {
     return status;
   }
@@ -137,6 +138,19 @@ function readRoundEndReason(data: DocumentData): RoundEndReason {
   }
 
   return null;
+}
+
+function getUsedQuestionIdsForSelection(room: Room) {
+  const usedQuestionIds = [...room.usedQuestionIds];
+
+  if (
+    room.currentQuestionId &&
+    !usedQuestionIds.includes(room.currentQuestionId)
+  ) {
+    usedQuestionIds.push(room.currentQuestionId);
+  }
+
+  return usedQuestionIds;
 }
 
 function areAllBluffersGuessed(players: Player[], guessedPlayerIds: string[]) {
@@ -239,6 +253,7 @@ function applyFinalRoundScoring(
     roundEndReason,
     scoringApplied: true,
     updatedAt: timestamp,
+    lastActivityAt: timestamp,
   });
 }
 
@@ -255,10 +270,13 @@ function toRoom(roomCode: string, data: DocumentData): Room {
     truthTellerId: readString(data, "truthTellerId"),
     guessedPlayerIds: readStringArray(data, "guessedPlayerIds"),
     revealedPlayerIds: readStringArray(data, "revealedPlayerIds"),
+    usedQuestionIds: readStringArray(data, "usedQuestionIds"),
     roundEndReason: readRoundEndReason(data),
     scoringApplied: readBoolean(data, "scoringApplied"),
     createdAt: data.createdAt ?? null,
     updatedAt: data.updatedAt ?? null,
+    lastActivityAt: data.lastActivityAt ?? data.updatedAt ?? null,
+    archivedAt: data.archivedAt ?? null,
   };
 }
 
@@ -319,10 +337,13 @@ export async function createRoom(
     truthTellerId: "",
     guessedPlayerIds: [],
     revealedPlayerIds: [],
+    usedQuestionIds: [],
     roundEndReason: null,
     scoringApplied: false,
     createdAt: timestamp,
     updatedAt: timestamp,
+    lastActivityAt: timestamp,
+    archivedAt: null,
   });
 
   batch.set(playerRef, {
@@ -401,6 +422,7 @@ export async function joinRoom(
       resolvedPlayerId = savedPlayerSnapshot.id;
       transaction.update(roomRef, {
         updatedAt: timestamp,
+        lastActivityAt: timestamp,
       });
       transaction.update(savedPlayerSnapshot.ref, {
         name,
@@ -418,6 +440,7 @@ export async function joinRoom(
         resolvedPlayerId = matchingPlayerSnapshot.id;
         transaction.update(roomRef, {
           updatedAt: timestamp,
+          lastActivityAt: timestamp,
         });
         transaction.update(matchingPlayerSnapshot.ref, {
           lastSeenAt: timestamp,
@@ -435,6 +458,7 @@ export async function joinRoom(
     resolvedPlayerId = candidatePlayerId;
     transaction.update(roomRef, {
       updatedAt: timestamp,
+      lastActivityAt: timestamp,
     });
     transaction.set(candidatePlayerRef, {
       playerId: candidatePlayerId,
@@ -502,6 +526,10 @@ export async function startGame(roomCode: string) {
 
     const room = toRoom(normalizedRoomCode, roomSnapshot.data());
 
+    if (room.status === "archived") {
+      throw new Error("This room has ended.");
+    }
+
     if (room.status !== "lobby") {
       throw new Error("This game has already started.");
     }
@@ -542,7 +570,8 @@ export async function startGame(roomCode: string) {
       throw new Error("A Truth Teller could not be selected.");
     }
 
-    const question = getNextQuestion(1);
+    const questionSelection = getNextQuestion(room.usedQuestionIds);
+    const question = questionSelection.question;
     const timestamp = serverTimestamp();
 
     transaction.update(roomRef, {
@@ -555,9 +584,11 @@ export async function startGame(roomCode: string) {
       truthTellerId: truthTeller.playerId,
       guessedPlayerIds: [],
       revealedPlayerIds: [],
+      usedQuestionIds: questionSelection.usedQuestionIds,
       roundEndReason: null,
       scoringApplied: false,
       updatedAt: timestamp,
+      lastActivityAt: timestamp,
     });
 
     for (const [playerId, playerRef] of playerRefs) {
@@ -684,6 +715,7 @@ export async function submitAnswer(
           }
         : {}),
       updatedAt: serverTimestamp(),
+      lastActivityAt: serverTimestamp(),
     });
   });
 }
@@ -761,6 +793,7 @@ export async function revealPlayerAnswer(
     transaction.update(roomRef, {
       revealedPlayerIds: [...room.revealedPlayerIds, playerIdToReveal],
       updatedAt: serverTimestamp(),
+      lastActivityAt: serverTimestamp(),
     });
   });
 }
@@ -918,6 +951,7 @@ export async function guessPlayer(roomCode: string, guessedPlayerId: string) {
     transaction.update(roomRef, {
       guessedPlayerIds: nextGuessedPlayerIds,
       updatedAt: serverTimestamp(),
+      lastActivityAt: serverTimestamp(),
     });
   });
 }
@@ -1029,6 +1063,10 @@ export async function startNextRound(roomCode: string) {
 
     const room = toRoom(normalizedRoomCode, roomSnapshot.data());
 
+    if (room.status === "archived") {
+      throw new Error("This room has ended.");
+    }
+
     if (room.status !== "result") {
       throw new Error("Next round can only start after results are shown.");
     }
@@ -1070,7 +1108,11 @@ export async function startNextRound(roomCode: string) {
     }
 
     const nextRoundNumber = Math.max(1, room.roundNumber + 1);
-    const question = getNextQuestion(nextRoundNumber, room.currentQuestionId);
+    const questionSelection = getNextQuestion(
+      getUsedQuestionIdsForSelection(room),
+      room.currentQuestionId,
+    );
+    const question = questionSelection.question;
     const timestamp = serverTimestamp();
 
     transaction.update(roomRef, {
@@ -1083,9 +1125,11 @@ export async function startNextRound(roomCode: string) {
       truthTellerId: truthTeller.playerId,
       guessedPlayerIds: [],
       revealedPlayerIds: [],
+      usedQuestionIds: questionSelection.usedQuestionIds,
       roundEndReason: null,
       scoringApplied: false,
       updatedAt: timestamp,
+      lastActivityAt: timestamp,
     });
 
     for (const [playerId, playerRef] of playerRefs) {
@@ -1102,6 +1146,113 @@ export async function startNextRound(roomCode: string) {
         isEliminated: false,
       });
     }
+  });
+}
+
+export async function skipQuestion(roomCode: string) {
+  const normalizedRoomCode = normalizeRoomCode(roomCode);
+  assertRoomCode(normalizedRoomCode);
+
+  const db = getDb();
+  const currentPlayerId = getOrCreatePlayerId();
+  const roomRef = doc(db, "rooms", normalizedRoomCode);
+  const playersRef = collection(db, "rooms", normalizedRoomCode, "players");
+  const playersSnapshot = await getDocs(playersRef);
+  const playerRefs = new Map(
+    playersSnapshot.docs.map((playerSnapshot) => [
+      playerSnapshot.id,
+      playerSnapshot.ref,
+    ]),
+  );
+
+  await runTransaction(db, async (transaction) => {
+    const roomSnapshot = await transaction.get(roomRef);
+
+    if (!roomSnapshot.exists()) {
+      throw new Error("No room found with that code.");
+    }
+
+    const room = toRoom(normalizedRoomCode, roomSnapshot.data());
+
+    if (room.status === "archived") {
+      throw new Error("This room has ended.");
+    }
+
+    if (room.status !== "answering") {
+      throw new Error("Questions can only be skipped during answering.");
+    }
+
+    if (room.hostId !== currentPlayerId) {
+      throw new Error("Only the host can skip the question.");
+    }
+
+    const questionSelection = getNextQuestion(
+      getUsedQuestionIdsForSelection(room),
+      room.currentQuestionId,
+    );
+    const question = questionSelection.question;
+    const timestamp = serverTimestamp();
+
+    transaction.update(roomRef, {
+      currentQuestionId: question.id,
+      question: question.question,
+      correctAnswer: question.answer,
+      guessedPlayerIds: [],
+      revealedPlayerIds: [],
+      usedQuestionIds: questionSelection.usedQuestionIds,
+      roundEndReason: null,
+      scoringApplied: false,
+      updatedAt: timestamp,
+      lastActivityAt: timestamp,
+    });
+
+    for (const [playerId, playerRef] of playerRefs) {
+      if (playerId === room.guesserId) {
+        continue;
+      }
+
+      transaction.update(playerRef, {
+        submittedAnswer: "",
+        hasSubmitted: false,
+        isEliminated: false,
+      });
+    }
+  });
+}
+
+export async function archiveRoom(roomCode: string) {
+  const normalizedRoomCode = normalizeRoomCode(roomCode);
+  assertRoomCode(normalizedRoomCode);
+
+  const db = getDb();
+  const currentPlayerId = getOrCreatePlayerId();
+  const roomRef = doc(db, "rooms", normalizedRoomCode);
+
+  await runTransaction(db, async (transaction) => {
+    const roomSnapshot = await transaction.get(roomRef);
+
+    if (!roomSnapshot.exists()) {
+      throw new Error("No room found with that code.");
+    }
+
+    const room = toRoom(normalizedRoomCode, roomSnapshot.data());
+
+    if (room.hostId !== currentPlayerId) {
+      throw new Error("Only the host can end the room.");
+    }
+
+    if (room.status === "archived") {
+      throw new Error("This room has already ended.");
+    }
+
+    const timestamp = serverTimestamp();
+
+    transaction.update(roomRef, {
+      status: "archived",
+      archivedAt: timestamp,
+      updatedAt: timestamp,
+      lastActivityAt: timestamp,
+    });
   });
 }
 

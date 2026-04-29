@@ -2,12 +2,14 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import { HostArchiveButton } from "./HostArchiveButton";
 import { Scoreboard } from "./Scoreboard";
 import type { Player, PlayerRole, Room, RoundEndReason } from "@/lib/types";
 
 interface ResultPhaseProps {
   currentPlayer: Player | null;
   currentPlayerId: string;
+  onArchiveRoom: () => Promise<void>;
   onStartNextRound: () => Promise<void>;
   players: Player[];
   room: Room;
@@ -122,6 +124,7 @@ function getRoundScoringSummary(players: Player[], room: Room) {
 export function ResultPhase({
   currentPlayer,
   currentPlayerId,
+  onArchiveRoom,
   onStartNextRound,
   players,
   room,
@@ -381,6 +384,11 @@ export function ResultPhase({
               >
                 {isStartingNextRound ? "Starting..." : "Next Round"}
               </button>
+              <HostArchiveButton
+                className="mt-3"
+                isHost={isHost}
+                onArchiveRoom={onArchiveRoom}
+              />
               {nextRoundError ? (
                 <p
                   className="mt-3 rounded-md border border-[#f0b4ae] bg-[#fff1ef] px-4 py-3 text-sm font-semibold text-[#8c2f29]"

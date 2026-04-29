@@ -1,6 +1,6 @@
 # QA_AGENT
 
-Last updated milestone: Milestone 14
+Last updated milestone: Milestone 16
 
 ## Responsibility
 
@@ -17,6 +17,8 @@ Last updated milestone: Milestone 14
 - Multiplayer features should be tested with multiple browser sessions.
 - Desktop viewports must be checked at 1366x768, 1440x900, and 1920x1080.
 - Mobile is a secondary sanity check.
+- Milestone 15 manual QA must cover random unused questions, Skip Question, archive, and activity timestamps.
+- Milestone 16 QA must cover deck count, duplicate IDs, duplicate question text, empty answers, source/confidence notes, category distribution, and sample quality review.
 
 ## Constraints
 
@@ -307,10 +309,50 @@ Completed checks:
 - Confirmed `npm.cmd run build` passes.
 - Confirmed `npm.cmd audit --audit-level=moderate` reports 0 vulnerabilities.
 
+### Milestone 15
+
+Planned checks:
+
+- Confirm first questions vary across new rooms.
+- Confirm questions do not repeat within a room until the deck is exhausted.
+- Confirm `usedQuestionIds` grows and resets safely after exhaustion.
+- Confirm host-only Skip Question works only during answering and clears submissions without changing roles, round, or scores.
+- Confirm host-only archive moves all clients to archived screen and blocks gameplay actions.
+- Confirm `lastActivityAt` updates after major actions.
+- Confirm lint, build, and audit pass.
+
+Completed checks:
+
+- Added Milestone 15 manual QA coverage to `docs/TEST_PLAN.md`.
+- Included random question, used deck, skip question, archive room, and activity timestamp tests.
+- Confirmed `npm.cmd run lint` passes.
+- Confirmed `npm.cmd run build` passes.
+- Confirmed `npm.cmd audit --audit-level=moderate` reports 0 vulnerabilities.
+
+### Milestone 16
+
+Planned checks:
+
+- Confirm `lib/questions.ts` contains exactly 150 questions.
+- Confirm IDs are unique and sequential from `q1` through `q150`.
+- Confirm question text is unique.
+- Confirm answers are non-empty and concise.
+- Confirm `docs/QUESTION_RESEARCH.md` has category, source, confidence, and bluffing notes for every question.
+- Confirm category and confidence distributions are reported.
+- Confirm lint, build, and audit pass.
+
+Completed checks:
+
+- Added Milestone 16 deck validation commands to `docs/TEST_PLAN.md`.
+- Added manual review expectations for bizarre fun-fact style and excluded myths.
+- Confirmed `npm.cmd run lint` passes.
+- Confirmed `npm.cmd run build` passes.
+- Confirmed `npm.cmd audit --audit-level=moderate` reports 0 vulnerabilities.
+
 ## Open Questions
 
 - None.
 
 ## Last Updated Milestone
 
-Milestone 14
+Milestone 16

@@ -1,6 +1,6 @@
 # Game Rules
 
-Last updated milestone: Milestone 12.7
+Last updated milestone: Milestone 16
 
 ## Minimum Player Rule
 
@@ -18,6 +18,7 @@ With 4 players:
 - `answering`: Non-guessers submit answers.
 - `guessing`: Guesser reviews submitted answers and selects players.
 - `result`: Roles, answers, and scores are revealed.
+- `archived`: Host ended the room; final scores remain visible and gameplay actions stop.
 
 ## Player Roles
 
@@ -48,7 +49,7 @@ With 4 players:
 ## Round Flow
 
 1. Host starts the game from the lobby.
-2. The app chooses a question.
+2. The app chooses a random unused question for that room.
 3. The app assigns:
    - One Guesser.
    - One Truth Teller.
@@ -78,8 +79,43 @@ With 4 players:
 18. Results reveal roles, answers, scores, and why points were awarded.
 19. Host starts the next round.
 20. Guesser rotates by joined order.
+21. Host can end/archive the room when the group is done.
 
 Milestone 8 implements answer submission for steps 5 through 8. The guessing UI starts in Milestone 9.
+
+## Question Deck Rules
+
+- The deck contains exactly 150 English bizarre fun-fact questions.
+- Questions are designed to be weird, party-friendly, and easy to bluff.
+- The deck emphasizes strange history, animals, food oddities, festivals, records, science, geography, language, pop culture, sports, and games.
+- Source and confidence notes live in `docs/QUESTION_RESEARCH.md`.
+- Each room tracks `usedQuestionIds`.
+- Starting a game picks a random question that has not been used in that room.
+- Starting the next round picks another random unused question.
+- Questions are no longer selected by round number.
+- If every question has been used, the room deck resets and starts a new used-question list with the selected question.
+- Existing older rooms without `usedQuestionIds` treat the field as `[]`.
+
+## Skip Question Rules
+
+- Only the host can skip.
+- Skip is allowed only during `answering`.
+- Skip is not available during `guessing`, `result`, or `archived`.
+- Skipping picks a new random unused question.
+- The skipped question remains consumed so it does not immediately return while unused questions remain.
+- If the deck is exhausted during skip, the deck resets and avoids immediately selecting the skipped question when possible.
+- Skip keeps the same round number, Guesser, Truth Teller, and Bluffers.
+- Skip clears submitted answers and submission flags for non-guessers.
+- Skip keeps scores unchanged.
+
+## Room Lifecycle Rules
+
+- Each room tracks `lastActivityAt` for important room actions.
+- Host can end/archive a room.
+- Archiving sets status to `archived` and records `archivedAt`.
+- Archived rooms are not deleted.
+- Archived room screens show a room-ended message, final scoreboard, and Back to Home.
+- Gameplay actions are not allowed after a room is archived.
 
 ## Scoring
 
@@ -105,7 +141,9 @@ MVP scoring:
 - Guessing is accepted only during `guessing`.
 - A player can be guessed only after their answer is revealed.
 - Stop/Bank is accepted only during `guessing` and only by the Guesser.
+- Skip Question is accepted only during `answering` and only by the host.
 - Next round can start only from `result`.
+- Archive Room can be used only by the host.
 - Scores persist between rounds.
 - Submitted answers, revealed answer IDs, guessed IDs, eliminated flags, round end reason, scoring flag, and roles reset each round.
 - Guesser rotates each round based on joined order.
@@ -132,6 +170,8 @@ MVP scoring:
 - Truth Teller cannot be the Guesser.
 - If all Bluffers are eliminated, the round ends with the bonus.
 - Refresh should preserve the current player identity through localStorage.
+- Missing `usedQuestionIds`, `lastActivityAt`, or `archivedAt` on older rooms should not break gameplay.
+- Used question deck exhaustion should reset the deck safely.
 
 ## Non-MVP Rules
 

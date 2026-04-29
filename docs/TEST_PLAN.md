@@ -1,6 +1,6 @@
 # Test Plan
 
-Last updated milestone: Milestone 14
+Last updated milestone: Milestone 16
 
 ## Local Test Plan
 
@@ -708,6 +708,92 @@ Expected:
 - Audit reports no moderate-or-higher vulnerabilities.
 - Final manual QA can be run from this document without relying on chat history.
 
+## Milestone 15 Checkpoint
+
+Run:
+
+```powershell
+cd E:\sounds-fishy-project
+npm.cmd run lint
+npm.cmd run build
+npm.cmd audit --audit-level=moderate
+npm.cmd run dev
+```
+
+Manual tests:
+
+- Create a new room and start the game.
+- Confirm the first question is not always the same across multiple new rooms.
+- Play several rounds and confirm questions do not repeat within the same room while unused questions remain.
+- Confirm `usedQuestionIds` grows after each selected question.
+- During answering, host clicks `Skip Question`.
+- Confirm the confirmation says current submitted answers will be cleared.
+- Confirm the question changes.
+- Confirm the same `roundNumber` is kept.
+- Confirm the same Guesser, Truth Teller, and Bluffers are kept.
+- Confirm submitted answers are cleared.
+- Confirm scores are unchanged.
+- Confirm the skipped question does not immediately appear again when unused questions remain.
+- Confirm non-host players cannot see or trigger Skip Question.
+- Confirm Skip Question is not available during `guessing` or `result`.
+- In Firestore, simulate `usedQuestionIds` containing all question IDs and confirm the next selection resets the deck safely.
+- Confirm `lastActivityAt` updates after create, join, start game, submit answer, reveal answer, guess, stop/bank, skip, next round, and archive.
+- As host, click `End Game`.
+- Confirm the archive confirmation appears.
+- Confirm all clients see the archived room screen.
+- Confirm final scoreboard is visible.
+- Confirm gameplay actions no longer continue in the archived room.
+- Confirm no Firestore delete is required.
+
+Expected:
+
+- Question selection is random and room-local.
+- The used-question deck resets only after exhaustion.
+- Skip Question is host-only, answering-only, and transactional.
+- Archived rooms preserve final room/player data and stop play.
+- Lint, build, and audit pass.
+
+## Milestone 16 Checkpoint
+
+Run:
+
+```powershell
+cd E:\sounds-fishy-project
+npm.cmd run lint
+npm.cmd run build
+npm.cmd audit --audit-level=moderate
+```
+
+Question deck validation:
+
+```powershell
+cd E:\sounds-fishy-project
+(Select-String -Path lib\questions.ts -Pattern 'id: "q').Count
+Select-String -Path lib\questions.ts -Pattern 'id: "q' | ForEach-Object { $_.Line.Trim() } | Sort-Object | Group-Object | Where-Object Count -gt 1
+Select-String -Path lib\questions.ts -Pattern 'question: "' | ForEach-Object { $_.Line.Trim() } | Sort-Object | Group-Object | Where-Object Count -gt 1
+Select-String -Path lib\questions.ts -Pattern 'answer: ""'
+```
+
+Manual review:
+
+- Open `lib\questions.ts` and confirm there are exactly 150 questions.
+- Confirm IDs are sequential from `q1` through `q150`.
+- Confirm all answers are short and non-empty.
+- Confirm no question text is duplicated.
+- Open `docs\QUESTION_RESEARCH.md`.
+- Confirm each question has a category, answer, bluffing value, source title or URL, and confidence.
+- Confirm only high or medium confidence facts appear in the final deck.
+- Confirm excluded myths are documented.
+- Sample at least 25 questions aloud and confirm they feel bizarre, funny, and bluffable rather than generic school trivia.
+
+Expected:
+
+- The question count is exactly 150.
+- Duplicate ID and duplicate question checks return no rows.
+- Empty answer check returns no rows.
+- The research ledger category distribution totals 150.
+- Lint, build, and audit pass.
+
 ## Multi-Browser Test Plan
 
 Later gameplay milestones should be tested with multiple browser sessions:
@@ -947,6 +1033,23 @@ Run this checklist for final MVP acceptance.
 - [ ] Confirm `submittedAnswer`, `hasSubmitted`, `isEliminated`, `guessedPlayerIds`, `revealedPlayerIds`, `roundEndReason`, and `scoringApplied` reset for the new round.
 - [ ] Play at least two full rounds.
 
+### Question Deck, Skip, And Archive
+
+- [ ] Create multiple new rooms and confirm the first question is not predictably the same each time.
+- [ ] Play several rounds in one room and confirm selected questions do not repeat while unused questions remain.
+- [ ] Confirm `usedQuestionIds` grows after Start Game, Skip Question, and Next Round.
+- [ ] During answering, host clicks `Skip Question`.
+- [ ] Confirm the confirmation dialog appears before submissions are cleared.
+- [ ] Confirm the question changes while round number, Guesser, Truth Teller, Bluffers, and scores stay unchanged.
+- [ ] Confirm submitted answers and submission flags are cleared after skipping.
+- [ ] Confirm non-host players do not see Skip Question.
+- [ ] Confirm Skip Question is not available during guessing or result.
+- [ ] Confirm `lastActivityAt` updates after important room actions.
+- [ ] Host clicks `End Game`.
+- [ ] Confirm all clients move to the archived room screen.
+- [ ] Confirm final scoreboard remains visible and no gameplay actions continue.
+- [ ] Confirm no room or player documents are deleted.
+
 ### Rejoin And Presence
 
 - [ ] Refresh the host browser during lobby and confirm the host is still recognized.
@@ -1006,6 +1109,9 @@ Run this checklist for final MVP acceptance.
 - [ ] Round ends correctly for Truth Teller selection, Stop / Bank, and all Bluffers found.
 - [ ] Result screen reveals roles.
 - [ ] Host can start next round.
+- [ ] Questions are random and do not repeat within a room until the deck resets.
+- [ ] Host can skip a bad question during answering.
+- [ ] Host can archive/end a room without deleting data.
 - [ ] App works after refresh.
 - [ ] App builds successfully.
 - [ ] App can be deployed to Vercel.

@@ -4,11 +4,11 @@ A small private web-based multiplayer bluffing party game for fewer than 10 frie
 
 ## Current Milestone Status
 
-- Completed: Milestone 14, final end-to-end test plan.
-- Next: Run the final QA checklist in `docs/TEST_PLAN.md`.
-- Status: Milestone roadmap complete; final manual verification is ready.
+- Completed: Milestone 16, improved 150-question English bizarre fun-fact deck.
+- Next: Review the Milestone 16 deck samples and run the question deck validation checks in `docs/TEST_PLAN.md`.
+- Status: Ready for question-deck review before committing, pushing, or deploying.
 
-The MVP flow now supports player ID rejoin, display-name fallback rejoin, no new players after game start, basic Online/Away presence, owner-revealed answer cards, Stop / Bank, and final round scoring.
+The MVP flow now supports player ID rejoin, display-name fallback rejoin, no new players after game start, basic Online/Away presence, owner-revealed answer cards, Stop / Bank, final round scoring, random unused room questions, host Skip Question, host End Game, and a sourced 150-question English bizarre fun-fact bluffing deck.
 
 ## Quick Start
 
@@ -84,6 +84,7 @@ The Firestore rules are suitable for this private MVP with trusted friends. They
 - [Development Checklist](docs/DEVELOPMENT_CHECKLIST.md)
 - [Test Plan](docs/TEST_PLAN.md)
 - [Deployment Guide](docs/DEPLOYMENT_GUIDE.md)
+- [Question Research](docs/QUESTION_RESEARCH.md)
 
 ## Agent Docs
 

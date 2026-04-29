@@ -1,6 +1,6 @@
 # DEPLOYMENT_AGENT
 
-Last updated milestone: Milestone 14
+Last updated milestone: Milestone 15
 
 ## Responsibility
 
@@ -74,10 +74,23 @@ Completed:
 - Deployment notes remain free-tier and private-MVP focused.
 - Firestore rules documentation now matches the tested permissive private-MVP rules under `rooms`.
 
+### Milestone 15
+
+Planned scope:
+
+- Keep deployment configuration unchanged unless room lifecycle work requires it.
+- Keep README status accurate for the new repeated-play readiness milestone.
+
+Completed:
+
+- No deployment configuration changes were needed.
+- README status now points to Milestone 15 manual repeated-play QA.
+- Firebase and Vercel setup instructions remain valid.
+
 ## Open Questions
 
 - None.
 
 ## Last Updated Milestone
 
-Milestone 14
+Milestone 15

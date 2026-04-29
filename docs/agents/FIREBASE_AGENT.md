@@ -1,6 +1,6 @@
 # FIREBASE_AGENT
 
-Last updated milestone: Milestone 14
+Last updated milestone: Milestone 15
 
 ## Responsibility
 
@@ -20,6 +20,8 @@ Last updated milestone: Milestone 14
 - Listen to the room document and players subcollection with `onSnapshot`.
 - Use `writeBatch` or `runTransaction` for multi-document updates.
 - No custom indexes are expected for MVP.
+- Room documents track `usedQuestionIds`, `lastActivityAt`, and nullable `archivedAt`.
+- Host-only skip and archive actions use Firestore transactions.
 
 ## Constraints
 
@@ -233,10 +235,29 @@ Completed:
 - Updated schema/spec/deployment notes to describe permissive private-MVP rules under `rooms`.
 - Confirmed no Firestore service changes were needed.
 
+### Milestone 15
+
+Planned scope:
+
+- Add `usedQuestionIds`, `lastActivityAt`, and optional `archivedAt` to room state.
+- Add `archived` room status.
+- Update `lastActivityAt` on major room actions.
+- Add `skipQuestion(roomCode)` as a host-only answering transaction.
+- Add `archiveRoom(roomCode)` as a host-only transaction.
+- Keep Firestore deletes blocked and rules otherwise unchanged.
+
+Completed:
+
+- Added room reads/writes for `usedQuestionIds`, `lastActivityAt`, and `archivedAt`.
+- Updated room lifecycle actions to write `lastActivityAt`.
+- Added transactional host-only `skipQuestion(roomCode)`.
+- Added transactional host-only `archiveRoom(roomCode)`.
+- Left Firestore delete behavior and unrelated collection closure unchanged.
+
 ## Open Questions
 
 - None.
 
 ## Last Updated Milestone
 
-Milestone 14
+Milestone 15

@@ -1,12 +1,12 @@
 # Development Checklist
 
-Last updated milestone: Milestone 14
+Last updated milestone: Milestone 16
 
 ## Current Status
 
-- Current milestone: Milestone 14 completed.
-- Next step: run the final manual QA checklist in `docs/TEST_PLAN.md`.
-- Rule: The milestone roadmap is complete; do not add new features without a new scoped request.
+- Current milestone: Milestone 16 implemented; awaiting question-deck review.
+- Next step: review the Milestone 16 samples and run the question deck validation checks in `docs/TEST_PLAN.md`.
+- Rule: Do not commit, push, deploy, or consider the MVP ready for friends until user approval.
 
 ## Milestone Checklist
 
@@ -295,6 +295,37 @@ Completion criteria:
 - [x] `npm.cmd run build` passes.
 - [x] `npm.cmd audit --audit-level=moderate` passes.
 
+### Milestone 15: Question Deck Management And Room Lifecycle
+
+- [x] MAIN_AGENT identifies relevant agents.
+- [x] Relevant agent docs are updated with planned work.
+- [x] `Room` type includes `usedQuestionIds`.
+- [x] `Room` type includes `lastActivityAt`.
+- [x] `Room` type includes nullable `archivedAt`.
+- [x] `GameStatus` includes `archived`.
+- [x] Question selection no longer uses `roundNumber` ordering.
+- [x] New games select a random unused question.
+- [x] Next rounds select a random unused question.
+- [x] Exhausted room decks reset safely.
+- [x] `lib/questions.ts` includes at least 120 questions.
+- [x] `skipQuestion(roomCode)` exists.
+- [x] Skip Question is host-only.
+- [x] Skip Question is answering-only.
+- [x] Skip Question keeps round number, roles, and scores unchanged.
+- [x] Skip Question clears submitted answers and submission flags.
+- [x] Skip Question resets guessed and revealed player IDs.
+- [x] Host-only Skip Question UI exists in AnswerPhase.
+- [x] `archiveRoom(roomCode)` exists.
+- [x] Archive Room is host-only.
+- [x] Archiving sets status to `archived` without deleting room or player documents.
+- [x] Archived room screen shows final scoreboard and Back to Home.
+- [x] `lastActivityAt` updates on major room actions.
+- [x] Firestore rules still block deletes and unrelated collections.
+- [x] Schema, technical spec, game rules, test plan, README, and agent docs are updated.
+- [x] `npm.cmd run lint` passes.
+- [x] `npm.cmd run build` passes.
+- [x] `npm.cmd audit --audit-level=moderate` passes.
+
 ## Completed Milestone History
 
 ### Milestone 0
@@ -543,4 +574,33 @@ Completed final end-to-end test plan:
 - Covered create/join room, realtime lobby, minimum player validation, start game, role visibility, answer submission, guessing, scoring, result reveal, next round, refresh behavior, rejoin/presence, desktop viewports, mobile sanity, and Vercel deployment behavior.
 - Aligned Firestore rules documentation with the post-Milestone 13 private-MVP rules hotfix.
 - Updated README status and relevant agent docs.
+- Verified `npm.cmd run lint`, `npm.cmd run build`, and `npm.cmd audit --audit-level=moderate`.
+
+### Milestone 15
+
+Completed question deck management and room lifecycle:
+
+- Added per-room `usedQuestionIds` tracking.
+- Replaced predictable round-number question selection with random unused question selection.
+- Expanded the question deck to 120 questions.
+- Added safe deck reset behavior after all questions are used.
+- Added host-only Skip Question during answering.
+- Kept skipped questions consumed and cleared current submitted answers when skipping.
+- Added `lastActivityAt` updates for important room actions.
+- Added host-only archive/end room behavior with no Firestore deletes.
+- Added an archived room screen with final scoreboard and Back to Home.
+- Updated schema, technical spec, game rules, test plan, README, and active agent docs.
+- Verified `npm.cmd run lint`, `npm.cmd run build`, and `npm.cmd audit --audit-level=moderate`.
+
+### Milestone 16
+
+Completed question deck quality upgrade:
+
+- Replaced the generic trivia-style deck with exactly 150 English bizarre fun-fact bluffing questions.
+- Kept IDs sequential from `q1` through `q150`.
+- Kept the existing `Question` type and local `lib\questions.ts` storage.
+- Created `docs\QUESTION_RESEARCH.md` with category, answer, bluffing value, source title or URL, and confidence notes for every question.
+- Included only high- and medium-confidence facts in the final deck.
+- Documented excluded viral myths and low-confidence facts.
+- Updated README, technical spec, game rules, test plan, checklist, and active agent docs.
 - Verified `npm.cmd run lint`, `npm.cmd run build`, and `npm.cmd audit --audit-level=moderate`.

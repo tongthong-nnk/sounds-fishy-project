@@ -1,6 +1,6 @@
 # Firebase Schema
 
-Last updated milestone: Milestone 14
+Last updated milestone: Milestone 15
 
 ## Firestore Collections
 
@@ -63,13 +63,23 @@ Milestone 12.5 adds rejoin and presence behavior:
 - Brand-new players can join only while room status is `lobby`.
 - Disconnected players are not deleted automatically.
 
+Milestone 15 adds question deck and room lifecycle behavior:
+
+- Room documents include `usedQuestionIds`.
+- Room documents include `lastActivityAt`.
+- Room documents include nullable `archivedAt`.
+- Room status includes `archived`.
+- `skipQuestion(roomCode)` changes the question during answering and clears non-Guesser submissions.
+- `archiveRoom(roomCode)` ends a room without deleting room or player documents.
+- Older room documents without the new fields are treated as empty or `null`.
+
 ## `rooms/{roomCode}` Fields
 
 | Field | Type | Notes |
 | --- | --- | --- |
 | `roomCode` | string | Uppercase room code and document ID. |
 | `hostId` | string | Player ID of the host. |
-| `status` | `"lobby" | "answering" | "guessing" | "result"` | Current game phase. |
+| `status` | `"lobby" | "answering" | "guessing" | "result" | "archived"` | Current game phase. |
 | `roundNumber` | number | Starts at 0 in lobby, 1 for first round. |
 | `currentQuestionId` | string | Current question ID or empty string in lobby. |
 | `question` | string | Current question text or empty string in lobby. |
@@ -78,10 +88,13 @@ Milestone 12.5 adds rejoin and presence behavior:
 | `truthTellerId` | string | Current Truth Teller player ID or empty string in lobby. |
 | `guessedPlayerIds` | string[] | Players already guessed this round. |
 | `revealedPlayerIds` | string[] | Non-Guesser players whose submitted answers have been revealed during guessing. |
+| `usedQuestionIds` | string[] | Question IDs already consumed by this room's deck cycle. |
 | `roundEndReason` | `"truth_selected" | "guesser_stopped" | "all_bluffers_found" | null` | Why the current round ended. |
 | `scoringApplied` | boolean | Whether final round scoring has already been applied. |
 | `createdAt` | timestamp | Server timestamp when room was created. |
 | `updatedAt` | timestamp | Server timestamp when room was last changed. |
+| `lastActivityAt` | timestamp | Server timestamp from the latest important room action. |
+| `archivedAt` | timestamp or null | Server timestamp when the host ended the room. |
 
 ## `rooms/{roomCode}/players/{playerId}` Fields
 
@@ -113,10 +126,13 @@ Milestone 12.5 adds rejoin and presence behavior:
   "truthTellerId": "player_def456",
   "guessedPlayerIds": [],
   "revealedPlayerIds": [],
+  "usedQuestionIds": ["q7"],
   "roundEndReason": null,
   "scoringApplied": false,
   "createdAt": "serverTimestamp",
-  "updatedAt": "serverTimestamp"
+  "updatedAt": "serverTimestamp",
+  "lastActivityAt": "serverTimestamp",
+  "archivedAt": null
 }
 ```
 
@@ -163,7 +179,9 @@ Use Firestore writes only on user actions or phase transitions:
 - Reveal player answer.
 - Guess player.
 - Stop or bank Guesser points.
+- Skip question.
 - Start next round.
+- Archive room.
 
 Presence is the one scoped interval write:
 

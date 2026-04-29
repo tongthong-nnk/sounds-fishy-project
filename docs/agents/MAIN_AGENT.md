@@ -1,6 +1,6 @@
 # MAIN_AGENT
 
-Last updated milestone: Milestone 14
+Last updated milestone: Milestone 16
 
 ## Responsibility
 
@@ -15,9 +15,10 @@ Last updated milestone: Milestone 14
 
 ## Current Decisions
 
-- Milestone 14 is completed.
-- The milestone roadmap is complete.
-- Final manual QA should be run from `docs/TEST_PLAN.md`.
+- Milestone 16 is implemented and awaiting user question-deck review.
+- Milestone 16 is scoped to replacing the generic deck with a sourced 150-question English bizarre fun-fact deck.
+- Do not change deployment configuration unless needed.
+- Do not commit, push, or deploy Milestone 16 until the user explicitly approves.
 - The project root is `E:\sounds-fishy-project`.
 - Existing files must be preserved and inspected before updates.
 - Multi-agent workflow is simulated through markdown files, not real parallel agents.
@@ -593,10 +594,70 @@ Completed:
 - Updated active agent docs.
 - Verified lint, build, and audit.
 
+### Milestone 15
+
+Relevant agents:
+
+- MAIN_AGENT.
+- ARCHITECT_AGENT.
+- GAME_LOGIC_AGENT.
+- FIREBASE_AGENT.
+- UI_UX_AGENT.
+- QA_AGENT.
+
+Planned scope:
+
+- Add per-room random unused question selection.
+- Add host-only Skip Question during answering.
+- Expand question deck to at least 120 questions.
+- Add last activity and archive lifecycle fields.
+- Add host-only archive/end room flow and archived room screen.
+- Update docs and validation.
+
+Completed:
+
+- Added Milestone 15 without changing deployment configuration.
+- Implemented random unused question selection and per-room deck tracking.
+- Added host-only Skip Question for the answering phase.
+- Expanded the local question deck to 120 questions.
+- Added host-only room archive/end behavior and archived-room UI.
+- Updated the relevant source-of-truth docs and agent notes.
+- Verified lint, build, and audit.
+- Stopping after Milestone 15 for manual testing confirmation.
+
+### Milestone 16
+
+Relevant agents:
+
+- MAIN_AGENT.
+- ARCHITECT_AGENT.
+- GAME_LOGIC_AGENT.
+- QA_AGENT.
+
+Planned scope:
+
+- Replace the generic trivia deck with exactly 150 bizarre fun-fact bluffing questions.
+- Create `docs/QUESTION_RESEARCH.md`.
+- Keep the deck local in `lib/questions.ts`.
+- Do not change deployment configuration.
+- Do not commit, push, or deploy.
+
+Completed:
+
+- Updated `lib/questions.ts` to exactly 150 English bizarre fun-fact questions.
+- Added per-question research notes, categories, source titles, confidence, and excluded myths.
+- Updated the project docs and active agent notes.
+- Verified lint, build, audit, and deck integrity checks.
+
+Not in scope:
+
+- Changing deployment configuration unless required.
+- Adding authentication, cleanup automation, timers, chat, or admin tools.
+
 ## Open Questions
 
 - None.
 
 ## Last Updated Milestone
 
-Milestone 14
+Milestone 16

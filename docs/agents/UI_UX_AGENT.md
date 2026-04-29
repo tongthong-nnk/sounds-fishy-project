@@ -1,6 +1,6 @@
 # UI_UX_AGENT
 
-Last updated milestone: Milestone 12.7
+Last updated milestone: Milestone 15
 
 ## Responsibility
 
@@ -20,6 +20,7 @@ Last updated milestone: Milestone 12.7
 - Use rounded cards.
 - Use horizontal room for player lists, scoreboards, and phase details.
 - Keep question, current role, player list, answers, and scoreboard easy to see.
+- Keep Skip Question and End Game controls compact and host-only.
 
 ## Constraints
 
@@ -195,10 +196,28 @@ Completed:
 - Guesser sees Stop / Bank and current banked temporary points.
 - ResultPhase shows round end reason and scoring summary cards.
 
+### Milestone 15
+
+Planned scope:
+
+- Add compact host-only Skip Question control during answering.
+- Confirm before clearing submitted answers.
+- Add host-only End Game / Archive Room control.
+- Add a clear archived-room screen with final scoreboard and Back to Home.
+- Avoid a large redesign.
+
+Completed:
+
+- Added host controls to AnswerPhase with Skip Question and End Game actions.
+- Added confirmation before Skip Question clears submitted answers.
+- Added reusable host archive button for lobby, active phases, and result.
+- Added archived room screen with ended-room message, final scoreboard, and Back to Home.
+- Kept the existing desktop-first layout structure.
+
 ## Open Questions
 
 - None.
 
 ## Last Updated Milestone
 
-Milestone 12.7
+Milestone 15

@@ -6,6 +6,11 @@ const DEFAULT_ROOM_CODE_LENGTH = 6;
 
 type AssignedPlayerRole = Exclude<PlayerRole, null>;
 
+export interface QuestionSelection {
+  question: Question;
+  usedQuestionIds: string[];
+}
+
 function getTimestampMillis(value: TimestampValue) {
   if (!value) {
     return 0;
@@ -47,23 +52,51 @@ export function generateRoomCode(length = DEFAULT_ROOM_CODE_LENGTH) {
   }).join("");
 }
 
+function getNormalizedUsedQuestionIds(usedQuestionIds: string[]) {
+  const validQuestionIds = new Set(questions.map((question) => question.id));
+  const normalizedQuestionIds: string[] = [];
+
+  for (const questionId of usedQuestionIds) {
+    if (
+      validQuestionIds.has(questionId) &&
+      !normalizedQuestionIds.includes(questionId)
+    ) {
+      normalizedQuestionIds.push(questionId);
+    }
+  }
+
+  return normalizedQuestionIds;
+}
+
 export function getNextQuestion(
-  roundNumber: number,
-  previousQuestionId?: string,
-): Question {
+  usedQuestionIds: string[] = [],
+  avoidQuestionId?: string,
+): QuestionSelection {
   if (questions.length === 0) {
     throw new Error("Question deck is empty.");
   }
 
-  const safeRoundNumber = Math.max(1, Math.floor(roundNumber));
-  const startIndex = (safeRoundNumber - 1) % questions.length;
-  const firstChoice = questions[startIndex];
+  const normalizedUsedQuestionIds =
+    getNormalizedUsedQuestionIds(usedQuestionIds);
+  const usedQuestionIdSet = new Set(normalizedUsedQuestionIds);
+  const unusedQuestions = questions.filter((question) => {
+    return !usedQuestionIdSet.has(question.id);
+  });
+  const deckWasExhausted = unusedQuestions.length === 0;
+  const baseCandidates = deckWasExhausted ? questions : unusedQuestions;
+  const candidates =
+    avoidQuestionId && baseCandidates.length > 1
+      ? baseCandidates.filter((question) => question.id !== avoidQuestionId)
+      : baseCandidates;
+  const question = candidates[getRandomIndex(candidates.length)];
 
-  if (firstChoice.id !== previousQuestionId || questions.length === 1) {
-    return firstChoice;
-  }
-
-  return questions[(startIndex + 1) % questions.length];
+  return {
+    question,
+    usedQuestionIds: [
+      ...(deckWasExhausted ? [] : normalizedUsedQuestionIds),
+      question.id,
+    ],
+  };
 }
 
 export function sortPlayersByJoinedAt(players: Player[]) {

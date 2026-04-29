@@ -2,12 +2,14 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import { HostArchiveButton } from "./HostArchiveButton";
 import { PlayerList } from "./PlayerList";
 import type { Player, Room } from "@/lib/types";
 
 interface LobbyProps {
   currentPlayer: Player | null;
   currentPlayerId: string;
+  onArchiveRoom: () => Promise<void>;
   onStartGame: () => Promise<void>;
   players: Player[];
   room: Room;
@@ -16,6 +18,7 @@ interface LobbyProps {
 export function Lobby({
   currentPlayer,
   currentPlayerId,
+  onArchiveRoom,
   onStartGame,
   players,
   room,
@@ -149,6 +152,11 @@ export function Lobby({
                     {startError}
                   </p>
                 ) : null}
+                <HostArchiveButton
+                  className="mt-3"
+                  isHost={isHost}
+                  onArchiveRoom={onArchiveRoom}
+                />
               </>
             ) : (
               <p className="mt-5 rounded-md bg-[#eef2ff] px-4 py-3 text-sm font-semibold text-[#3949a3]">

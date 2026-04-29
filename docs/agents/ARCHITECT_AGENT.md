@@ -1,6 +1,6 @@
 # ARCHITECT_AGENT
 
-Last updated milestone: Milestone 12.7
+Last updated milestone: Milestone 16
 
 ## Responsibility
 
@@ -23,6 +23,8 @@ Last updated milestone: Milestone 12.7
 - Keep localStorage player helpers in `lib/player.ts`.
 - Keep Firebase app initialization in `lib/firebase.ts`.
 - Keep all Firestore reads and writes in `lib/roomService.ts`.
+- Keep question deck selection pure in `lib/gameLogic.ts`.
+- Keep archived-room display isolated in a focused component.
 
 ## Constraints
 
@@ -242,10 +244,43 @@ Completed:
 - Passed Stop / Bank through `GameRoom`.
 - Kept ResultPhase scoring summary derived from existing room/player state.
 
+### Milestone 15
+
+Planned scope:
+
+- Add lifecycle fields to shared `Room` type.
+- Keep question-deck selection pure in `gameLogic.ts`.
+- Keep skip/archive Firestore mutations inside `roomService.ts`.
+- Keep UI controls in existing phase components where possible.
+- Add a small archived-room component instead of folding archived UI into unrelated phases.
+
+Completed:
+
+- Added `usedQuestionIds`, `lastActivityAt`, and `archivedAt` to `Room`.
+- Added `archived` to the shared game status type.
+- Kept question selection pure in `gameLogic.ts`.
+- Kept Firestore lifecycle actions in `roomService.ts`.
+- Added small focused UI components for host archive actions and archived room display.
+
+### Milestone 16
+
+Planned scope:
+
+- Keep the question deck as local TypeScript data in `lib/questions.ts`.
+- Preserve the existing `Question` type.
+- Add research documentation without moving deck data to Firestore.
+- Do not change deployment configuration.
+
+Completed:
+
+- Kept the 150-question deck in `lib/questions.ts`.
+- Added `docs/QUESTION_RESEARCH.md` as documentation only.
+- No architecture or Firestore schema changes were required.
+
 ## Open Questions
 
 - None.
 
 ## Last Updated Milestone
 
-Milestone 12.7
+Milestone 16

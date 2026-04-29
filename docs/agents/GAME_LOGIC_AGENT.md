@@ -1,6 +1,6 @@
 # GAME_LOGIC_AGENT
 
-Last updated milestone: Milestone 12.7
+Last updated milestone: Milestone 16
 
 ## Responsibility
 
@@ -23,6 +23,10 @@ Last updated milestone: Milestone 12.7
   - +1 temporary point for each Bluffer correctly guessed.
   - +1 bonus if all Bluffers are guessed before the Truth Teller.
 - Selecting the Truth Teller ends the round immediately.
+- Room questions are selected randomly from unused question IDs, not by round number.
+- Host Skip Question keeps the same round number, roles, and scores.
+- The final local deck target is exactly 150 English bizarre fun-fact questions.
+- Question research and confidence notes live in `docs/QUESTION_RESEARCH.md`.
 
 ## Constraints
 
@@ -181,10 +185,45 @@ Completed:
 - Used `getNextQuestion(nextRoundNumber, room.currentQuestionId)` for question selection.
 - Preserved scores and reset only round-specific player state.
 
+### Milestone 15
+
+Planned scope:
+
+- Replace round-number question order with random unused question selection.
+- Track per-room `usedQuestionIds`.
+- Reset the room deck after all questions are used.
+- Avoid immediately repeating the skipped question when possible.
+- Keep Guesser, Truth Teller, Bluffers, scores, and round number unchanged when skipping.
+- Expand the question pool to at least 120 suitable bluffing questions.
+
+Completed:
+
+- Replaced round-number question selection with `getNextQuestion(usedQuestionIds, avoidQuestionId)`.
+- Added normalized used-question tracking and exhausted-deck reset behavior.
+- Preserved current roles, score, and round number during Skip Question.
+- Expanded the deck to 120 original bluff-friendly questions.
+
+### Milestone 16
+
+Planned scope:
+
+- Replace weak or generic questions with bizarre fun-fact prompts.
+- Keep IDs sequential from `q1` to `q150`.
+- Keep answers concise and suitable for bluffing.
+- Exclude low-confidence myths.
+- Do not change game logic unless the new deck count requires it.
+
+Completed:
+
+- Replaced the deck with exactly 150 sourced English fun-fact prompts.
+- Preserved the existing `Question` type and local `lib/questions.ts` structure.
+- Created `docs/QUESTION_RESEARCH.md` to track category, source, confidence, and bluffing value.
+- No game logic changes were required for the new deck count.
+
 ## Open Questions
 
 - None.
 
 ## Last Updated Milestone
 
-Milestone 12.7
+Milestone 16

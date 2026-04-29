@@ -3,10 +3,13 @@
 import Link from "next/link";
 import type { FormEvent } from "react";
 import { useState } from "react";
+import { HostArchiveButton } from "./HostArchiveButton";
 import type { Player, PlayerRole, Room } from "@/lib/types";
 
 interface AnswerPhaseProps {
   currentPlayer: Player | null;
+  onArchiveRoom: () => Promise<void>;
+  onSkipQuestion: () => Promise<void>;
   onSubmitAnswer: (playerId: string, answer: string) => Promise<void>;
   players: Player[];
   room: Room;
@@ -62,13 +65,17 @@ function getRoleBadgeClass(role: PlayerRole) {
 
 export function AnswerPhase({
   currentPlayer,
+  onArchiveRoom,
+  onSkipQuestion,
   onSubmitAnswer,
   players,
   room,
 }: AnswerPhaseProps) {
   const [draftAnswer, setDraftAnswer] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSkippingQuestion, setIsSkippingQuestion] = useState(false);
   const [submitError, setSubmitError] = useState("");
+  const [skipError, setSkipError] = useState("");
   const currentRole = currentPlayer?.role ?? null;
   const nonGuessers = players.filter((player) => player.role !== "guesser");
   const guesser = players.find((player) => player.playerId === room.guesserId);
@@ -81,6 +88,8 @@ export function AnswerPhase({
   const submittedCount = nonGuessers.filter((player) => {
     return player.hasSubmitted;
   }).length;
+  const isHost =
+    currentPlayer?.isHost || currentPlayer?.playerId === room.hostId || false;
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -108,6 +117,34 @@ export function AnswerPhase({
       );
     } finally {
       setIsSubmitting(false);
+    }
+  }
+
+  async function handleSkipQuestion() {
+    if (!isHost || isSkippingQuestion) {
+      return;
+    }
+
+    const shouldSkip = window.confirm(
+      "Skip this question? Current submitted answers for this round will be cleared.",
+    );
+
+    if (!shouldSkip) {
+      return;
+    }
+
+    setIsSkippingQuestion(true);
+    setSkipError("");
+
+    try {
+      await onSkipQuestion();
+      setDraftAnswer(null);
+    } catch (error) {
+      setSkipError(
+        error instanceof Error ? error.message : "Could not skip question.",
+      );
+    } finally {
+      setIsSkippingQuestion(false);
     }
   }
 
@@ -156,6 +193,36 @@ export function AnswerPhase({
               {getRoleMessage(currentRole)}
             </p>
           </div>
+
+          {isHost ? (
+            <div className="mt-5 rounded-lg border border-[#e3e9f1] bg-[#fbfcfe] p-5">
+              <p className="text-sm font-semibold uppercase text-[#3949a3]">
+                Host controls
+              </p>
+              <div className="mt-4 grid gap-3 sm:grid-cols-2">
+                <button
+                  className="h-11 rounded-md bg-[#3949a3] px-5 font-bold text-white transition hover:bg-[#2f3f92] focus:outline-none focus:ring-4 focus:ring-[#3949a3]/25 disabled:cursor-not-allowed disabled:bg-[#9ba6d6]"
+                  disabled={isSkippingQuestion}
+                  onClick={handleSkipQuestion}
+                  type="button"
+                >
+                  {isSkippingQuestion ? "Skipping..." : "Skip Question"}
+                </button>
+                <HostArchiveButton
+                  isHost={isHost}
+                  onArchiveRoom={onArchiveRoom}
+                />
+              </div>
+              {skipError ? (
+                <p
+                  className="mt-3 rounded-md border border-[#f0b4ae] bg-[#fff1ef] px-4 py-3 text-sm font-semibold text-[#8c2f29]"
+                  role="alert"
+                >
+                  {skipError}
+                </p>
+              ) : null}
+            </div>
+          ) : null}
 
           {!currentPlayer ? (
             <div

@@ -1,4 +1,9 @@
-export type GameStatus = "lobby" | "answering" | "guessing" | "result";
+export type GameStatus =
+  | "lobby"
+  | "answering"
+  | "guessing"
+  | "result"
+  | "archived";
 
 export type PlayerRole = "guesser" | "truth" | "bluffer" | null;
 
@@ -48,8 +53,11 @@ export interface Room {
   truthTellerId: string;
   guessedPlayerIds: string[];
   revealedPlayerIds: string[];
+  usedQuestionIds: string[];
   roundEndReason: RoundEndReason;
   scoringApplied: boolean;
   createdAt: TimestampValue;
   updatedAt: TimestampValue;
+  lastActivityAt: TimestampValue;
+  archivedAt: TimestampValue;
 }

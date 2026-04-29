@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState, useSyncExternalStore } from "react";
 import { AnswerPhase } from "./AnswerPhase";
+import { ArchivedRoom } from "./ArchivedRoom";
 import { ErrorState } from "./ErrorState";
 import { GuessingPhase } from "./GuessingPhase";
 import { Lobby } from "./Lobby";
@@ -10,6 +11,7 @@ import { ResultPhase } from "./ResultPhase";
 import { sortPlayersByJoinedAt } from "@/lib/gameLogic";
 import { getSavedPlayerId } from "@/lib/player";
 import {
+  archiveRoom,
   listenToPlayers,
   listenToRoom,
   guessPlayer,
@@ -18,6 +20,7 @@ import {
   startNextRound,
   stopGuessing,
   submitAnswer,
+  skipQuestion,
   updatePlayerPresence,
 } from "@/lib/roomService";
 import type { Player, Room } from "@/lib/types";
@@ -138,10 +141,22 @@ export function GameRoom({ roomCode }: GameRoomProps) {
     return <LoadingState message="Loading room..." />;
   }
 
+  if (room.status === "archived") {
+    return (
+      <ArchivedRoom
+        currentPlayerId={currentPlayerId}
+        players={sortedPlayers}
+        room={room}
+      />
+    );
+  }
+
   if (room.status === "answering") {
     return (
       <AnswerPhase
         currentPlayer={currentPlayer}
+        onArchiveRoom={() => archiveRoom(room.roomCode)}
+        onSkipQuestion={() => skipQuestion(room.roomCode)}
         onSubmitAnswer={(playerId, answer) => {
           return submitAnswer(room.roomCode, playerId, answer);
         }}
@@ -155,6 +170,7 @@ export function GameRoom({ roomCode }: GameRoomProps) {
     return (
       <GuessingPhase
         currentPlayer={currentPlayer}
+        onArchiveRoom={() => archiveRoom(room.roomCode)}
         onGuessPlayer={(guessedPlayerId) => {
           return guessPlayer(room.roomCode, guessedPlayerId);
         }}
@@ -175,6 +191,7 @@ export function GameRoom({ roomCode }: GameRoomProps) {
       <ResultPhase
         currentPlayer={currentPlayer}
         currentPlayerId={currentPlayerId}
+        onArchiveRoom={() => archiveRoom(room.roomCode)}
         onStartNextRound={() => startNextRound(room.roomCode)}
         players={sortedPlayers}
         room={room}
@@ -195,6 +212,7 @@ export function GameRoom({ roomCode }: GameRoomProps) {
     <Lobby
       currentPlayer={currentPlayer}
       currentPlayerId={currentPlayerId}
+      onArchiveRoom={() => archiveRoom(room.roomCode)}
       onStartGame={() => startGame(room.roomCode)}
       players={sortedPlayers}
       room={room}

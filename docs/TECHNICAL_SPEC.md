@@ -1,6 +1,6 @@
 # Technical Spec
 
-Last updated milestone: Milestone 14
+Last updated milestone: Milestone 16
 
 ## Tech Stack
 
@@ -34,7 +34,7 @@ Milestone 1 has initialized the base project:
 - Room page renders an initial answering screen for `answering` status.
 - Truth Teller and Bluffers can submit answers during `answering`.
 - Room automatically moves to `guessing` after all non-guessers submit.
-- Owner-revealed guessing, final round scoring, Stop/Bank, result reveal, next round, polish, rejoin, and presence are implemented through Milestone 12.7.
+- Owner-revealed guessing, final round scoring, Stop/Bank, result reveal, next round, polish, rejoin, presence, random unused room questions, host skip, and room archive are implemented through Milestone 15.
 
 ## Architecture
 
@@ -128,6 +128,7 @@ Expected status values:
 - `answering`
 - `guessing`
 - `result`
+- `archived`
 
 Expected role values:
 
@@ -155,7 +156,7 @@ Expected role values:
 ### `lib/gameLogic.ts`
 
 - `generateRoomCode()`
-- `getNextQuestion(roundNumber, previousQuestionId?)`
+- `getNextQuestion(usedQuestionIds?, avoidQuestionId?)`
 - `getNextGuesser(players, currentGuesserId?)`
 - `assignRoles(players, guesserId)`
 - `areAllNonGuessersSubmitted(players, guesserId)`
@@ -174,7 +175,9 @@ Expected role values:
 - `guessPlayer(roomCode, guessedPlayerId)`
 - `revealPlayerAnswer(roomCode, playerIdToReveal)`
 - `stopGuessing(roomCode)`
+- `skipQuestion(roomCode)`
 - `startNextRound(roomCode)`
+- `archiveRoom(roomCode)`
 - `updatePlayerPresence(roomCode, playerId)`
 
 ## Data Flow
@@ -227,6 +230,28 @@ Expected role values:
 - `guessPlayer(roomCode, guessedPlayerId)` allows guesses only for revealed player IDs.
 - Result phase remains the full reveal and shows all roles and answers.
 - `startNextRound(roomCode)` resets `revealedPlayerIds` to `[]` with the rest of the round state.
+
+## Question Deck Strategy
+
+- `lib/questions.ts` now contains exactly 150 English bizarre fun-fact questions.
+- `docs/QUESTION_RESEARCH.md` records each question's category, answer, bluffing value, source title or URL, and confidence.
+- The final deck includes only high- and medium-confidence facts; low-confidence viral myths are excluded.
+- The deck remains local TypeScript data and is not moved to Firestore.
+- `Room.usedQuestionIds` tracks selected questions for each room.
+- `getNextQuestion(usedQuestionIds?, avoidQuestionId?)` returns a random question and the updated used-question list.
+- Starting a game and starting the next round no longer use `roundNumber` for question selection.
+- If every question has been used, the helper resets the deck and starts a new used list with the selected question.
+- Skip Question passes the current question as `avoidQuestionId` so the skipped question is not selected again immediately when alternatives exist.
+- Older rooms missing `usedQuestionIds` are treated as `[]`.
+
+## Room Lifecycle Strategy
+
+- `Room.lastActivityAt` updates on create, join, start game, submit answer, reveal answer, guess, stop/bank, skip, next round, and archive.
+- `Room.archivedAt` is set when the host ends a room.
+- `Room.status` includes `archived`.
+- `archiveRoom(roomCode)` sets status to `archived` without deleting room or player documents.
+- `ArchivedRoom` renders a room-ended screen with final scoreboard and Back to Home.
+- Gameplay service functions already require active phase statuses, so archived rooms cannot continue play.
 
 ## Round Scoring Strategy
 

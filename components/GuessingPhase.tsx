@@ -2,11 +2,13 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import { HostArchiveButton } from "./HostArchiveButton";
 import { Scoreboard } from "./Scoreboard";
 import type { Player, Room } from "@/lib/types";
 
 interface GuessingPhaseProps {
   currentPlayer: Player | null;
+  onArchiveRoom: () => Promise<void>;
   onGuessPlayer: (playerId: string) => Promise<void>;
   onRevealPlayerAnswer: (playerId: string) => Promise<void>;
   onStopGuessing: () => Promise<void>;
@@ -28,6 +30,7 @@ function getPlayerName(player: Player | undefined) {
 
 export function GuessingPhase({
   currentPlayer,
+  onArchiveRoom,
   onGuessPlayer,
   onRevealPlayerAnswer,
   onStopGuessing,
@@ -41,6 +44,8 @@ export function GuessingPhase({
     return player.playerId !== room.guesserId;
   });
   const isGuesser = currentPlayer?.playerId === room.guesserId;
+  const isHost =
+    currentPlayer?.isHost || currentPlayer?.playerId === room.hostId || false;
   const activeGuessCount = room.guessedPlayerIds.length;
   const revealedCount = room.revealedPlayerIds.length;
   const bankedPointCount = players.filter((player) => {
@@ -344,6 +349,11 @@ export function GuessingPhase({
           <Scoreboard
             currentPlayerId={currentPlayer?.playerId ?? ""}
             players={players}
+          />
+
+          <HostArchiveButton
+            isHost={isHost}
+            onArchiveRoom={onArchiveRoom}
           />
 
           <div className="rounded-lg border border-[#d8e1eb] bg-white p-5 shadow-sm">
