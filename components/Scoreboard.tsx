@@ -26,10 +26,12 @@ export function Scoreboard({ currentPlayerId = "", players }: ScoreboardProps) {
   const sortedPlayers = sortPlayersByScore(players);
 
   return (
-    <div className="rounded-lg border border-[#d8e1eb] bg-white p-5 shadow-sm">
+    <div className="game-card p-5">
       <div className="mb-4 flex items-center justify-between gap-3">
-        <h2 className="text-xl font-bold text-[#121a27]">Scoreboard</h2>
-        <span className="rounded-md bg-[#eef2ff] px-3 py-1 text-sm font-bold text-[#3949a3]">
+        <h2 className="font-display text-xl font-bold text-[#10243d]">
+          Scoreboard
+        </h2>
+        <span className="status-pill bg-[#eefbff] px-3 py-1 text-sm text-[#0a6f98]">
           {players.length} players
         </span>
       </div>
@@ -42,11 +44,11 @@ export function Scoreboard({ currentPlayerId = "", players }: ScoreboardProps) {
 
           return (
             <li
-              className="flex min-h-14 items-center justify-between gap-3 rounded-md border border-[#e3e9f1] bg-[#fbfcfe] px-4 py-3"
+              className="game-card-soft flex min-h-14 items-center justify-between gap-3 px-4 py-3"
               key={player.playerId}
             >
               <div className="flex min-w-0 items-center gap-3">
-                <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-[#253247] text-sm font-bold text-white">
+                <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#ffc857] text-sm font-extrabold text-[#4c2b00]">
                   {index + 1}
                 </span>
                 <div className="min-w-0">
@@ -70,7 +72,7 @@ export function Scoreboard({ currentPlayerId = "", players }: ScoreboardProps) {
                 </div>
               </div>
 
-              <span className="shrink-0 rounded-md bg-[#fff1ef] px-3 py-1 text-sm font-bold text-[#a33e38]">
+              <span className="shrink-0 rounded-full bg-[#fff1ef] px-3 py-1 text-sm font-extrabold text-[#bf3446]">
                 {player.score}
               </span>
             </li>

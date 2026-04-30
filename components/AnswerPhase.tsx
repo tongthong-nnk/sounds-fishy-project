@@ -4,6 +4,10 @@ import Link from "next/link";
 import type { FormEvent } from "react";
 import { useState } from "react";
 import { HostArchiveButton } from "./HostArchiveButton";
+import { playUiSound } from "./theme/audioEvents";
+import { ConfirmDialog } from "./theme/ConfirmDialog";
+import { OceanBackground } from "./theme/OceanBackground";
+import { RoleBadge } from "./theme/RoleBadge";
 import type { Player, PlayerRole, Room } from "@/lib/types";
 
 interface AnswerPhaseProps {
@@ -13,22 +17,6 @@ interface AnswerPhaseProps {
   onSubmitAnswer: (playerId: string, answer: string) => Promise<void>;
   players: Player[];
   room: Room;
-}
-
-function getRoleLabel(role: PlayerRole) {
-  if (role === "guesser") {
-    return "Guesser";
-  }
-
-  if (role === "truth") {
-    return "Truth Teller";
-  }
-
-  if (role === "bluffer") {
-    return "Bluffer";
-  }
-
-  return "Observer";
 }
 
 function getRoleMessage(role: PlayerRole) {
@@ -41,26 +29,10 @@ function getRoleMessage(role: PlayerRole) {
   }
 
   if (role === "bluffer") {
-    return "Invent a believable fake answer. Make it sound just plausible enough.";
+    return "Use the correct answer as context, then invent a believable fake answer. Do not submit the exact correct answer.";
   }
 
   return "This browser is not currently assigned a role in the room.";
-}
-
-function getRoleBadgeClass(role: PlayerRole) {
-  if (role === "truth") {
-    return "bg-[#edf7f6] text-[#1d6f6a]";
-  }
-
-  if (role === "guesser") {
-    return "bg-[#fff1ef] text-[#a33e38]";
-  }
-
-  if (role === "bluffer") {
-    return "bg-[#eef2ff] text-[#3949a3]";
-  }
-
-  return "bg-[#f1f4f8] text-[#465365]";
 }
 
 export function AnswerPhase({
@@ -74,12 +46,15 @@ export function AnswerPhase({
   const [draftAnswer, setDraftAnswer] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSkippingQuestion, setIsSkippingQuestion] = useState(false);
+  const [isSkipDialogOpen, setIsSkipDialogOpen] = useState(false);
   const [submitError, setSubmitError] = useState("");
   const [skipError, setSkipError] = useState("");
   const currentRole = currentPlayer?.role ?? null;
   const nonGuessers = players.filter((player) => player.role !== "guesser");
   const guesser = players.find((player) => player.playerId === room.guesserId);
   const canSubmit = currentRole === "truth" || currentRole === "bluffer";
+  const canSeeCorrectAnswer =
+    currentRole === "truth" || currentRole === "bluffer";
   const answerValue =
     currentRole === "truth"
       ? room.correctAnswer
@@ -105,12 +80,24 @@ export function AnswerPhase({
       return;
     }
 
+    if (
+      currentRole === "bluffer" &&
+      cleanAnswer.toLocaleLowerCase() === room.correctAnswer.toLocaleLowerCase()
+    ) {
+      setSubmitError(
+        "Bluffers should submit a fake answer, not the exact correct answer.",
+      );
+      return;
+    }
+
     setIsSubmitting(true);
     setSubmitError("");
+    playUiSound("click");
 
     try {
       await onSubmitAnswer(currentPlayer.playerId, cleanAnswer);
       setDraftAnswer(cleanAnswer);
+      playUiSound("success");
     } catch (error) {
       setSubmitError(
         error instanceof Error ? error.message : "Could not submit answer.",
@@ -120,25 +107,29 @@ export function AnswerPhase({
     }
   }
 
+  function handleOpenSkipDialog() {
+    if (!isHost || isSkippingQuestion) {
+      return;
+    }
+
+    playUiSound("warning");
+    setIsSkipDialogOpen(true);
+  }
+
   async function handleSkipQuestion() {
     if (!isHost || isSkippingQuestion) {
       return;
     }
 
-    const shouldSkip = window.confirm(
-      "Skip this question? Current submitted answers for this round will be cleared.",
-    );
-
-    if (!shouldSkip) {
-      return;
-    }
-
     setIsSkippingQuestion(true);
     setSkipError("");
+    playUiSound("warning");
 
     try {
       await onSkipQuestion();
       setDraftAnswer(null);
+      setIsSkipDialogOpen(false);
+      playUiSound("success");
     } catch (error) {
       setSkipError(
         error instanceof Error ? error.message : "Could not skip question.",
@@ -149,12 +140,13 @@ export function AnswerPhase({
   }
 
   return (
-    <main className="min-h-screen bg-[#f6f8fb] px-5 py-7 text-[#17202f] sm:px-8 lg:px-10">
+    <OceanBackground>
+      <main className="min-h-screen px-5 py-7 text-[#10243d] sm:px-8 lg:px-10">
       <section className="mx-auto grid max-w-6xl gap-6 lg:grid-cols-[1.1fr_0.9fr]">
-        <div className="rounded-lg border border-[#d8e1eb] bg-white p-6 shadow-[0_20px_70px_rgba(23,32,47,0.10)]">
+        <div className="game-card p-6">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div>
-              <p className="text-sm font-semibold uppercase text-[#1d6f6a]">
+              <p className="text-sm font-extrabold uppercase text-[#0a6f98]">
                 Round {room.roundNumber}
               </p>
               <p className="mt-1 font-mono text-xs font-semibold text-[#677386]">
@@ -162,11 +154,11 @@ export function AnswerPhase({
               </p>
             </div>
             <div className="flex flex-wrap items-center gap-2">
-              <span className="rounded-md bg-[#eef2ff] px-3 py-2 text-sm font-bold text-[#3949a3]">
-                Answering
-              </span>
-              <Link
-                className="inline-flex h-10 items-center rounded-md border border-[#d8e1eb] bg-[#fbfcfe] px-4 text-sm font-bold text-[#253247] transition hover:bg-white focus:outline-none focus:ring-4 focus:ring-[#253247]/15"
+                <span className="phase-pill px-3 py-2 text-sm">
+                  Answering
+                </span>
+                <Link
+                className="game-button game-button-soft inline-flex h-10 items-center px-4 text-sm font-extrabold focus:outline-none focus:ring-4 focus:ring-[#253247]/15"
                 href="/"
               >
                 Back to Home
@@ -174,36 +166,30 @@ export function AnswerPhase({
             </div>
           </div>
 
-          <h1 className="mt-5 text-3xl font-bold leading-tight text-[#121a27] sm:text-4xl">
+          <h1 className="font-display mt-5 text-3xl font-bold leading-tight text-[#10243d] sm:text-4xl">
             {room.question}
           </h1>
 
-          <div className="mt-6 rounded-lg border border-[#e3e9f1] bg-[#fbfcfe] p-5">
-            <p className="text-sm font-semibold uppercase text-[#677386]">
+          <div className="game-card-soft mt-6 p-5">
+            <p className="text-sm font-extrabold uppercase text-[#52708b]">
               Your role
             </p>
-            <span
-              className={`mt-2 inline-flex rounded-md px-3 py-2 text-sm font-bold ${getRoleBadgeClass(
-                currentRole,
-              )}`}
-            >
-              {getRoleLabel(currentRole)}
-            </span>
-            <p className="mt-3 leading-7 text-[#465365]">
+            <RoleBadge className="mt-2 text-sm" role={currentRole} />
+            <p className="mt-3 font-semibold leading-7 text-[#173a56]">
               {getRoleMessage(currentRole)}
             </p>
           </div>
 
           {isHost ? (
-            <div className="mt-5 rounded-lg border border-[#e3e9f1] bg-[#fbfcfe] p-5">
-              <p className="text-sm font-semibold uppercase text-[#3949a3]">
+            <div className="game-card-soft mt-5 p-5">
+              <p className="text-sm font-extrabold uppercase text-[#0a6f98]">
                 Host controls
               </p>
               <div className="mt-4 grid gap-3 sm:grid-cols-2">
                 <button
-                  className="h-11 rounded-md bg-[#3949a3] px-5 font-bold text-white transition hover:bg-[#2f3f92] focus:outline-none focus:ring-4 focus:ring-[#3949a3]/25 disabled:cursor-not-allowed disabled:bg-[#9ba6d6]"
+                  className="game-button game-button-blue h-11 px-5 font-extrabold focus:outline-none focus:ring-4 focus:ring-[#3949a3]/25"
                   disabled={isSkippingQuestion}
-                  onClick={handleSkipQuestion}
+                  onClick={handleOpenSkipDialog}
                   type="button"
                 >
                   {isSkippingQuestion ? "Skipping..." : "Skip Question"}
@@ -234,20 +220,26 @@ export function AnswerPhase({
             </div>
           ) : null}
 
-          {currentRole === "truth" ? (
-            <div className="mt-5 rounded-lg border border-[#9fd6d1] bg-[#edf7f6] p-5">
-              <p className="text-sm font-semibold uppercase text-[#1d6f6a]">
+          {canSeeCorrectAnswer ? (
+            <div className="mt-5 rounded-[1.25rem] border-2 border-[#9fd6d1] bg-[#e9fbff]/90 p-5 shadow-[0_1rem_2rem_rgba(8,63,91,0.10)]">
+              <p className="text-sm font-extrabold uppercase text-[#0a6f98]">
                 Correct answer
               </p>
-              <p className="mt-2 text-2xl font-bold text-[#121a27]">
+              <p className="font-display mt-2 text-2xl font-bold text-[#10243d]">
                 {room.correctAnswer}
               </p>
+              {currentRole === "bluffer" ? (
+                <p className="mt-3 text-sm font-semibold text-[#1d6f6a]">
+                  Use this as context. Your submitted answer should be a
+                  believable fake, not this exact answer.
+                </p>
+              ) : null}
             </div>
           ) : null}
 
           {canSubmit ? (
             <form
-              className="mt-5 rounded-lg border border-[#e3e9f1] bg-white p-5"
+              className="game-card-soft mt-5 p-5"
               onSubmit={handleSubmit}
             >
               <label
@@ -257,12 +249,16 @@ export function AnswerPhase({
                 {currentRole === "truth" ? "Submit truth" : "Your fake answer"}
               </label>
               <textarea
-                className="mt-3 min-h-28 w-full resize-none rounded-md border border-[#c8d3df] bg-[#fbfcfe] px-4 py-3 text-base text-[#17202f] outline-none transition focus:border-[#2f9c95] focus:bg-white focus:ring-4 focus:ring-[#2f9c95]/15 disabled:text-[#465365]"
+                className="game-input mt-3 min-h-28 w-full resize-none px-4 py-3 text-base disabled:text-[#465365]"
                 disabled={currentRole === "truth" || isSubmitting}
                 id="answer-input"
                 maxLength={120}
                 onChange={(event) => setDraftAnswer(event.target.value)}
-                placeholder="Type a believable answer"
+                placeholder={
+                  currentRole === "bluffer"
+                    ? "Type a believable fake answer"
+                    : "Type a believable answer"
+                }
                 value={answerValue}
               />
               <div className="mt-3 flex flex-wrap items-center justify-between gap-3">
@@ -272,7 +268,7 @@ export function AnswerPhase({
                     : "Submissions stay hidden until guessing starts."}
                 </p>
                 <button
-                  className="h-11 rounded-md bg-[#f06c64] px-5 font-bold text-white transition hover:bg-[#d95851] focus:outline-none focus:ring-4 focus:ring-[#f06c64]/25 disabled:cursor-not-allowed disabled:bg-[#f0a39e]"
+                  className="game-button game-button-coral h-11 px-5 font-extrabold focus:outline-none focus:ring-4 focus:ring-[#f06c64]/25"
                   disabled={isSubmitting}
                   type="submit"
                 >
@@ -296,28 +292,28 @@ export function AnswerPhase({
         </div>
 
         <aside className="grid gap-6">
-          <div className="rounded-lg border border-[#d8e1eb] bg-white p-5 shadow-sm">
-            <p className="text-sm font-semibold uppercase text-[#3949a3]">
+          <div className="game-card p-5">
+            <p className="text-sm font-extrabold uppercase text-[#0a6f98]">
               Guesser
             </p>
-            <p className="mt-2 text-xl font-bold text-[#121a27]">
+            <p className="font-display mt-2 text-xl font-bold text-[#10243d]">
               {guesser?.name ?? "Selecting..."}
             </p>
           </div>
 
-          <div className="rounded-lg border border-[#d8e1eb] bg-white p-5 shadow-sm">
+          <div className="game-card p-5">
             <div className="mb-4 flex items-center justify-between gap-3">
-              <h2 className="text-xl font-bold text-[#121a27]">
+              <h2 className="font-display text-xl font-bold text-[#10243d]">
                 Submission Status
               </h2>
-              <span className="rounded-md bg-[#fff1ef] px-3 py-1 text-sm font-bold text-[#a33e38]">
+              <span className="status-pill bg-[#fff1ef] px-3 py-1 text-sm text-[#bf3446]">
                 {submittedCount}/{nonGuessers.length}
               </span>
             </div>
             <ul className="grid gap-3">
               {nonGuessers.map((player) => (
                 <li
-                  className="flex items-center justify-between gap-3 rounded-md border border-[#e3e9f1] bg-[#fbfcfe] px-4 py-3"
+                  className="game-card-soft flex items-center justify-between gap-3 px-4 py-3"
                   key={player.playerId}
                 >
                   <span className="truncate font-bold text-[#17202f]">
@@ -338,6 +334,19 @@ export function AnswerPhase({
           </div>
         </aside>
       </section>
+      <ConfirmDialog
+        confirmLabel="Skip Question"
+        isConfirming={isSkippingQuestion}
+        isOpen={isSkipDialogOpen}
+        message="Current submitted answers for this round will be cleared."
+        onCancel={() => setIsSkipDialogOpen(false)}
+        onConfirm={() => {
+          void handleSkipQuestion();
+        }}
+        title="Skip question?"
+        variant="warning"
+      />
     </main>
+    </OceanBackground>
   );
 }

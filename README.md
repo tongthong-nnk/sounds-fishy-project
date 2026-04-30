@@ -4,11 +4,11 @@ A small private web-based multiplayer bluffing party game for fewer than 10 frie
 
 ## Current Milestone Status
 
-- Completed: Milestone 16, improved 150-question English bizarre fun-fact deck.
-- Next: Review the Milestone 16 deck samples and run the question deck validation checks in `docs/TEST_PLAN.md`.
-- Status: Ready for question-deck review before committing, pushing, or deploying.
+- Completed: Milestone 18.3, audio behavior and lobby copy-button UI fixes.
+- Next: Manually test button sounds with Music Off and the lobby copy controls using the Milestone 18.3 checklist in `docs/TEST_PLAN.md`.
+- Status: Ready for Milestone 18.3 review before committing, pushing, or deploying.
 
-The MVP flow now supports player ID rejoin, display-name fallback rejoin, no new players after game start, basic Online/Away presence, owner-revealed answer cards, Stop / Bank, final round scoring, random unused room questions, host Skip Question, host End Game, and a sourced 150-question English bizarre fun-fact bluffing deck.
+The MVP flow now supports player ID rejoin, display-name fallback rejoin, no new players after game start, basic Online/Away presence, Bluffers seeing the correct answer for better fake answers, owner-revealed answer cards, Stop / Bank, final round scoring, random unused room questions, host Skip Question, host End Game, a sourced 150-question bizarre fun-fact deck localized into natural Thai, and an original playful ocean/fish UI theme with optional browser-started instrumental music.
 
 ## Quick Start
 

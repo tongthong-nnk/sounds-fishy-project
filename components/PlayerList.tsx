@@ -13,10 +13,10 @@ export function PlayerList({
   players,
 }: PlayerListProps) {
   return (
-    <div className="rounded-lg border border-[#d8e1eb] bg-white p-5 shadow-sm">
+    <div className="game-card p-5">
       <div className="mb-4 flex items-center justify-between gap-3">
-        <h2 className="text-xl font-bold text-[#121a27]">Players</h2>
-        <span className="rounded-md bg-[#eef2ff] px-3 py-1 text-sm font-bold text-[#3949a3]">
+        <h2 className="font-display text-xl font-bold text-[#10243d]">Players</h2>
+        <span className="status-pill bg-[#fff8d6] px-3 py-1 text-sm text-[#6d3b00]">
           {players.length}/10
         </span>
       </div>
@@ -30,7 +30,7 @@ export function PlayerList({
 
           return (
             <li
-              className="flex min-h-14 items-center justify-between gap-3 rounded-md border border-[#e3e9f1] bg-[#fbfcfe] px-4 py-3"
+              className="game-card-soft flex min-h-14 items-center justify-between gap-3 px-4 py-3"
               key={player.playerId}
             >
               <div className="min-w-0">
@@ -58,7 +58,7 @@ export function PlayerList({
                   {presenceLabel}
                 </span>
                 {isHost ? (
-                  <span className="rounded-md bg-[#fff1ef] px-2 py-1 text-xs font-bold text-[#a33e38]">
+                  <span className="rounded-md bg-[#fff1ef] px-2 py-1 text-xs font-bold text-[#bf3446]">
                     Host
                   </span>
                 ) : null}

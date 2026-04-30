@@ -1,6 +1,6 @@
 # GAME_LOGIC_AGENT
 
-Last updated milestone: Milestone 16
+Last updated milestone: Milestone 17
 
 ## Responsibility
 
@@ -19,13 +19,15 @@ Last updated milestone: Milestone 16
 - First Guesser should be based on joined order.
 - Guesser rotates by joined order in later rounds.
 - Truth Teller must not be the Guesser.
+- Bluffers see the correct answer during answering so they can craft stronger fake answers.
+- Guesser still cannot see the correct answer during answering or guessing.
 - MVP scoring now includes Guesser, Bluffer, and Truth Teller outcomes:
   - +1 temporary point for each Bluffer correctly guessed.
   - +1 bonus if all Bluffers are guessed before the Truth Teller.
 - Selecting the Truth Teller ends the round immediately.
 - Room questions are selected randomly from unused question IDs, not by round number.
 - Host Skip Question keeps the same round number, roles, and scores.
-- The final local deck target is exactly 150 English bizarre fun-fact questions.
+- The final local deck target is exactly 150 Thai-localized bizarre fun-fact questions.
 - Question research and confidence notes live in `docs/QUESTION_RESEARCH.md`.
 
 ## Constraints
@@ -220,10 +222,33 @@ Completed:
 - Created `docs/QUESTION_RESEARCH.md` to track category, source, confidence, and bluffing value.
 - No game logic changes were required for the new deck count.
 
+### Post-Milestone 16 Scoped Answer Visibility Adjustment
+
+Completed:
+
+- Updated answering rules so Bluffers can see the correct answer as context.
+- Kept the Guesser unable to see the correct answer during answering or guessing.
+- Kept scoring, reveal flow, room lifecycle, and question logic unchanged.
+- Added a UI guard so Bluffers cannot submit the exact correct answer from the normal answer form.
+
+### Milestone 17
+
+Planned scope:
+
+- Localize question and answer strings into natural Thai.
+- Keep all facts, IDs, scoring, role assignment, and room transitions unchanged.
+- Preserve the existing `Question` type.
+
+Completed:
+
+- Localized all 150 playable question and answer strings in `lib/questions.ts`.
+- Kept IDs sequential from `q1` through `q150`.
+- No pure game logic changes were required.
+
 ## Open Questions
 
 - None.
 
 ## Last Updated Milestone
 
-Milestone 16
+Milestone 17

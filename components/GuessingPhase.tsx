@@ -4,6 +4,8 @@ import Link from "next/link";
 import { useState } from "react";
 import { HostArchiveButton } from "./HostArchiveButton";
 import { Scoreboard } from "./Scoreboard";
+import { playUiSound } from "./theme/audioEvents";
+import { OceanBackground } from "./theme/OceanBackground";
 import type { Player, Room } from "@/lib/types";
 
 interface GuessingPhaseProps {
@@ -70,9 +72,11 @@ export function GuessingPhase({
 
     setPendingAction({ playerId, type: "reveal" });
     setGuessError("");
+    playUiSound("reveal");
 
     try {
       await onRevealPlayerAnswer(playerId);
+      playUiSound("success");
     } catch (error) {
       setGuessError(
         error instanceof Error ? error.message : "Could not reveal answer.",
@@ -89,9 +93,11 @@ export function GuessingPhase({
 
     setPendingAction({ playerId, type: "guess" });
     setGuessError("");
+    playUiSound("guess");
 
     try {
       await onGuessPlayer(playerId);
+      playUiSound("success");
     } catch (error) {
       setGuessError(
         error instanceof Error ? error.message : "Could not submit guess.",
@@ -108,9 +114,11 @@ export function GuessingPhase({
 
     setPendingAction({ type: "stop" });
     setGuessError("");
+    playUiSound("click");
 
     try {
       await onStopGuessing();
+      playUiSound("success");
     } catch (error) {
       setGuessError(
         error instanceof Error ? error.message : "Could not bank points.",
@@ -121,13 +129,14 @@ export function GuessingPhase({
   }
 
   return (
-    <main className="min-h-screen bg-[#f6f8fb] px-5 py-7 text-[#17202f] sm:px-8 lg:px-10">
+    <OceanBackground>
+      <main className="min-h-screen px-5 py-7 text-[#10243d] sm:px-8 lg:px-10">
       <section className="mx-auto grid max-w-7xl gap-6 xl:grid-cols-[1fr_320px]">
         <div className="grid gap-6">
-          <div className="rounded-lg border border-[#d8e1eb] bg-white p-6 shadow-[0_20px_70px_rgba(23,32,47,0.10)]">
+          <div className="game-card p-6">
             <div className="flex flex-wrap items-center justify-between gap-3">
               <div>
-                <p className="text-sm font-semibold uppercase text-[#1d6f6a]">
+                <p className="text-sm font-extrabold uppercase text-[#0a6f98]">
                   Round {room.roundNumber}
                 </p>
                 <p className="mt-1 font-mono text-xs font-semibold text-[#677386]">
@@ -135,11 +144,11 @@ export function GuessingPhase({
                 </p>
               </div>
               <div className="flex flex-wrap items-center gap-2">
-                <span className="rounded-md bg-[#fff1ef] px-3 py-2 text-sm font-bold text-[#a33e38]">
+                <span className="phase-pill px-3 py-2 text-sm">
                   Guessing
                 </span>
                 <Link
-                  className="inline-flex h-10 items-center rounded-md border border-[#d8e1eb] bg-[#fbfcfe] px-4 text-sm font-bold text-[#253247] transition hover:bg-white focus:outline-none focus:ring-4 focus:ring-[#253247]/15"
+                  className="game-button game-button-soft inline-flex h-10 items-center px-4 text-sm font-extrabold focus:outline-none focus:ring-4 focus:ring-[#253247]/15"
                   href="/"
                 >
                   Back to Home
@@ -147,12 +156,12 @@ export function GuessingPhase({
               </div>
             </div>
 
-            <h1 className="mt-5 text-3xl font-bold leading-tight text-[#121a27] sm:text-4xl">
+            <h1 className="font-display mt-5 text-3xl font-bold leading-tight text-[#10243d] sm:text-4xl">
               {room.question}
             </h1>
 
             <div className="mt-5 grid gap-3 md:grid-cols-4">
-              <div className="rounded-md border border-[#e3e9f1] bg-[#fbfcfe] px-4 py-3">
+              <div className="game-card-soft px-4 py-3">
                 <p className="text-xs font-semibold uppercase text-[#677386]">
                   Guesser
                 </p>
@@ -160,7 +169,7 @@ export function GuessingPhase({
                   {getPlayerName(guesser)}
                 </p>
               </div>
-              <div className="rounded-md border border-[#e3e9f1] bg-[#fbfcfe] px-4 py-3">
+              <div className="game-card-soft px-4 py-3">
                 <p className="text-xs font-semibold uppercase text-[#677386]">
                   Guesses made
                 </p>
@@ -168,7 +177,7 @@ export function GuessingPhase({
                   {activeGuessCount}
                 </p>
               </div>
-              <div className="rounded-md border border-[#e3e9f1] bg-[#fbfcfe] px-4 py-3">
+              <div className="game-card-soft px-4 py-3">
                 <p className="text-xs font-semibold uppercase text-[#677386]">
                   Banked points
                 </p>
@@ -176,7 +185,7 @@ export function GuessingPhase({
                   {bankedPointCount}
                 </p>
               </div>
-              <div className="rounded-md border border-[#e3e9f1] bg-[#fbfcfe] px-4 py-3">
+              <div className="game-card-soft px-4 py-3">
                 <p className="text-xs font-semibold uppercase text-[#677386]">
                   Your status
                 </p>
@@ -187,7 +196,7 @@ export function GuessingPhase({
             </div>
 
             {isGuesser ? (
-              <div className="mt-5 rounded-md border border-[#e3e9f1] bg-[#fbfcfe] p-4">
+              <div className="game-card-soft mt-5 p-4">
                 <div className="flex flex-wrap items-center justify-between gap-3">
                   <div>
                     <p className="text-sm font-bold text-[#121a27]">
@@ -199,7 +208,7 @@ export function GuessingPhase({
                     </p>
                   </div>
                   <button
-                    className="h-11 rounded-md bg-[#253247] px-5 font-bold text-white transition hover:bg-[#17202f] focus:outline-none focus:ring-4 focus:ring-[#253247]/20 disabled:cursor-not-allowed disabled:bg-[#8290a3]"
+                    className="game-button game-button-gold h-11 px-5 font-extrabold focus:outline-none focus:ring-4 focus:ring-[#253247]/20"
                     disabled={Boolean(pendingAction)}
                     onClick={() => {
                       void handleStopGuessing();
@@ -252,10 +261,10 @@ export function GuessingPhase({
 
               return (
                 <article
-                  className={`rounded-lg border bg-white p-5 shadow-sm transition ${
+                  className={`game-card p-5 transition ${
                     hasBeenGuessed
                       ? "border-[#9fd6d1] bg-[#edf7f6]"
-                      : "border-[#d8e1eb]"
+                      : "border-white/75"
                   }`}
                   key={player.playerId}
                 >
@@ -284,12 +293,12 @@ export function GuessingPhase({
                   </div>
 
                   {isRevealed ? (
-                    <p className="mt-4 min-h-20 rounded-md border border-[#e3e9f1] bg-[#fbfcfe] px-4 py-3 text-xl font-bold leading-7 text-[#17202f]">
+                    <p className="game-card-soft mt-4 min-h-20 px-4 py-3 text-xl font-bold leading-7 text-[#10243d]">
                       {player.submittedAnswer || "No answer submitted"}
                     </p>
                   ) : (
-                    <div className="mt-4 min-h-20 rounded-md border border-dashed border-[#c8d3df] bg-[#f3f5f8] px-4 py-3">
-                      <p className="text-xl font-bold leading-7 text-[#253247]">
+                    <div className="answer-card-hidden mt-4 min-h-20 rounded-[1.15rem] px-4 py-3">
+                      <p className="font-display text-xl font-bold leading-7 text-[#10243d]">
                         Answer hidden
                       </p>
                       <p className="mt-2 text-sm font-semibold text-[#677386]">
@@ -305,7 +314,7 @@ export function GuessingPhase({
                   {!isRevealed ? (
                     isCardOwner ? (
                       <button
-                        className="mt-4 h-11 w-full rounded-md bg-[#3949a3] px-5 font-bold text-white transition hover:bg-[#2f3f92] focus:outline-none focus:ring-4 focus:ring-[#3949a3]/25 disabled:cursor-not-allowed disabled:bg-[#9ba6d6]"
+                        className="game-button game-button-blue mt-4 h-11 w-full px-5 font-extrabold focus:outline-none focus:ring-4 focus:ring-[#3949a3]/25"
                         disabled={!canReveal}
                         onClick={() => {
                           void handleReveal(player.playerId);
@@ -323,7 +332,7 @@ export function GuessingPhase({
                     )
                   ) : (
                     <button
-                      className="mt-4 h-11 w-full rounded-md bg-[#f06c64] px-5 font-bold text-white transition hover:bg-[#d95851] focus:outline-none focus:ring-4 focus:ring-[#f06c64]/25 disabled:cursor-not-allowed disabled:bg-[#f0a39e]"
+                      className="game-button game-button-coral mt-4 h-11 w-full px-5 font-extrabold focus:outline-none focus:ring-4 focus:ring-[#f06c64]/25"
                       disabled={!canGuess}
                       onClick={() => {
                         void handleGuess(player.playerId);
@@ -356,7 +365,7 @@ export function GuessingPhase({
             onArchiveRoom={onArchiveRoom}
           />
 
-          <div className="rounded-lg border border-[#d8e1eb] bg-white p-5 shadow-sm">
+          <div className="game-card p-5">
             <div className="flex items-center justify-between gap-3">
               <h2 className="text-xl font-bold text-[#121a27]">
                 Player Status
@@ -403,5 +412,6 @@ export function GuessingPhase({
         </aside>
       </section>
     </main>
+    </OceanBackground>
   );
 }

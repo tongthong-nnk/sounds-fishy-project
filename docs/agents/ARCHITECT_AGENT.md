@@ -1,6 +1,6 @@
 # ARCHITECT_AGENT
 
-Last updated milestone: Milestone 16
+Last updated milestone: Milestone 18.3
 
 ## Responsibility
 
@@ -25,6 +25,8 @@ Last updated milestone: Milestone 16
 - Keep all Firestore reads and writes in `lib/roomService.ts`.
 - Keep question deck selection pure in `lib/gameLogic.ts`.
 - Keep archived-room display isolated in a focused component.
+- Keep reusable visual theme/audio pieces under `components/theme/`.
+- Keep procedural audio isolated in `VolumeControl.tsx`.
 
 ## Constraints
 
@@ -277,10 +279,91 @@ Completed:
 - Added `docs/QUESTION_RESEARCH.md` as documentation only.
 - No architecture or Firestore schema changes were required.
 
+### Milestone 17
+
+Planned scope:
+
+- Keep the localized Thai deck in `lib/questions.ts`.
+- Preserve the existing `Question` type and file boundary.
+- Keep English source/confidence documentation in `docs/QUESTION_RESEARCH.md`.
+- Do not move questions to Firestore or add localization infrastructure.
+
+Completed:
+
+- Localized only the static question data and research documentation.
+- No architecture, schema, or deployment configuration changes were required.
+
+### Milestone 18
+
+Planned scope:
+
+- Add small reusable theme components instead of scattering decorative SVG/audio logic through every screen.
+- Keep visual polish in React components and `app/globals.css`.
+- Keep procedural audio as a client component.
+- Do not introduce heavy animation or audio libraries.
+- Do not change gameplay service boundaries.
+
+Completed:
+
+- Added `components/theme/OceanBackground.tsx`.
+- Added `components/theme/FishMascot.tsx`.
+- Added `components/theme/RoleBadge.tsx`.
+- Added `components/theme/VolumeControl.tsx`.
+- Kept Firestore logic in `roomService.ts` and pure game logic in `gameLogic.ts`.
+- No schema, scoring, room lifecycle, question deck, or deployment config changes were made.
+
+### Milestone 18.1
+
+Planned scope:
+
+- Keep visual fixes inside `app/globals.css`, layout/page components, and existing theme components.
+- Add defensive inline positioning for decorative SVGs so they cannot affect document flow.
+- Avoid changing service functions, schema, deck data, or gameplay components beyond presentation classes.
+
+Completed:
+
+- Updated `FishMascot` to accept a style prop.
+- Added inline fixed positioning to decorative `OceanBackground` fish instances.
+- Kept all audio generation logic inside `VolumeControl`.
+- Kept all gameplay, Firestore, scoring, lifecycle, and deck boundaries unchanged.
+
+### Milestone 18.2
+
+Planned scope:
+
+- Keep modal and audio event primitives in `components/theme/`.
+- Keep sound effect dispatch simple and UI-only.
+- Avoid adding external audio assets or dependencies.
+- Do not change `roomService.ts`, `gameLogic.ts`, `types.ts`, or the question deck.
+
+Completed:
+
+- Added `components/theme/ConfirmDialog.tsx`.
+- Added `components/theme/audioEvents.ts`.
+- Extended `VolumeControl` to own music default-on behavior, sound-effect generation, mute, and volume persistence.
+- Updated existing components to call UI sound events and themed confirmation modals from user actions only.
+- No gameplay/data boundaries were changed.
+
+### Milestone 18.3
+
+Planned scope:
+
+- Keep audio behavior changes isolated in `VolumeControl.tsx`.
+- Keep UI sound dispatch API unchanged.
+- Keep lobby copy text/layout changes in `Lobby.tsx`.
+- Do not touch service, schema, scoring, deck, or deployment code.
+
+Completed:
+
+- Added separate Web Audio gain nodes for background music and UI effects.
+- Kept `playUiSound` as the existing event dispatch surface.
+- Updated `Lobby.tsx` copy labels and copied status only.
+- No gameplay/data boundaries were changed.
+
 ## Open Questions
 
 - None.
 
 ## Last Updated Milestone
 
-Milestone 16
+Milestone 18.3

@@ -1,6 +1,6 @@
 # Technical Spec
 
-Last updated milestone: Milestone 16
+Last updated milestone: Milestone 18.3
 
 ## Tech Stack
 
@@ -33,8 +33,13 @@ Milestone 1 has initialized the base project:
 - Host can start a game from the lobby when at least 4 players are present.
 - Room page renders an initial answering screen for `answering` status.
 - Truth Teller and Bluffers can submit answers during `answering`.
+- Truth Teller and Bluffers see the correct answer during `answering`; the Guesser does not.
 - Room automatically moves to `guessing` after all non-guessers submit.
-- Owner-revealed guessing, final round scoring, Stop/Bank, result reveal, next round, polish, rejoin, presence, random unused room questions, host skip, and room archive are implemented through Milestone 15.
+- Owner-revealed guessing, final round scoring, Stop/Bank, result reveal, next round, polish, rejoin, presence, random unused room questions, host skip, room archive, Thai-localized deck, and visual/audio polish are implemented through Milestone 18.
+- Milestone 18 adds an original playful ocean/fish visual theme and optional procedural background music without changing gameplay logic, Firestore schema, scoring, room lifecycle, or the question deck.
+- Milestone 18.1 tightens the visual pass after manual review: decorative layers are fixed/non-layout, the first viewport is content-led, cards/buttons are more clearly framed, and the music control is styled as an intentional floating panel.
+- Milestone 18.2 replaces the awkward bottom decoration, defaults music visually to On while respecting saved mute preferences, adds subtle procedural UI sound effects, removes visible MVP labels, centers the lobby, and replaces browser confirm dialogs with themed in-app confirmation modals.
+- Milestone 18.3 decouples UI sound effects from the background music toggle and tightens Lobby copy-button labels/layout.
 
 ## Architecture
 
@@ -78,6 +83,11 @@ components/
   Scoreboard.tsx
   LoadingState.tsx
   ErrorState.tsx
+  theme/
+    FishMascot.tsx
+    OceanBackground.tsx
+    RoleBadge.tsx
+    VolumeControl.tsx
 
 lib/
   firebase.ts
@@ -227,14 +237,15 @@ Expected role values:
 - Each non-Guesser reveals only their own hidden card through `revealPlayerAnswer(roomCode, playerIdToReveal)`.
 - The Guesser cannot reveal cards and must ask players to reveal in the live voice chat flow.
 - Non-guessers can see which cards are hidden, revealed, or guessed, but role labels stay hidden during guessing.
+- The Guesser still cannot see the correct answer or roles during guessing.
 - `guessPlayer(roomCode, guessedPlayerId)` allows guesses only for revealed player IDs.
 - Result phase remains the full reveal and shows all roles and answers.
 - `startNextRound(roomCode)` resets `revealedPlayerIds` to `[]` with the rest of the round state.
 
 ## Question Deck Strategy
 
-- `lib/questions.ts` now contains exactly 150 English bizarre fun-fact questions.
-- `docs/QUESTION_RESEARCH.md` records each question's category, answer, bluffing value, source title or URL, and confidence.
+- `lib/questions.ts` now contains exactly 150 Thai-localized bizarre fun-fact questions.
+- `docs/QUESTION_RESEARCH.md` preserves the English source/confidence ledger and adds Thai question/answer localization notes.
 - The final deck includes only high- and medium-confidence facts; low-confidence viral myths are excluded.
 - The deck remains local TypeScript data and is not moved to Firestore.
 - `Room.usedQuestionIds` tracks selected questions for each room.
@@ -282,6 +293,37 @@ Layout guidance:
 - Keep buttons large and readable.
 - Use rounded cards and clear spacing.
 - Keep mobile usable with stacked layouts.
+
+## Visual Theme Strategy
+
+- The UI uses an original fish-party/ocean theme rather than copying any commercial game artwork or trade dress.
+- `OceanBackground` provides the shared layered ocean gradient, wave shapes, bubbles, and subtle decorative fish.
+- Background decoration is fixed or absolutely positioned behind content, pointer-events none, bounded in size, and never part of normal document flow.
+- `FishMascot` is a small original SVG illustration used as decorative theme art; background instances are also inline-positioned defensively so they cannot push content downward.
+- `RoleBadge` centralizes role color language:
+  - Guesser uses warm gold/spotlight styling.
+  - Bluffer uses coral/red fish styling.
+  - Truth Teller uses bright blue/clear-water styling.
+- Global classes in `app/globals.css` define shared card, button, input, badge, hidden-answer-card, background, and volume-control styling.
+- Typography uses rounded Google fonts through `next/font/google`, with Thai-readable body text and a more playful `Mali` display face.
+- The layout remains desktop-first for 1366x768, 1440x900, and 1920x1080, with mobile stacked as a fallback.
+- The home page is kept compact enough that title, description, and create/join card are visible in the first 1366x768 viewport.
+
+## Audio Strategy
+
+- `VolumeControl` is a client component rendered from `app/layout.tsx`.
+- Music is generated locally with the Web Audio API; no external audio asset or copyrighted music is included.
+- Music is enabled visually by default at moderate volume, but audio starts/resumes only after the first user interaction when browser policy allows it.
+- If the user manually mutes music, the saved mute preference is respected on refresh.
+- The control is fixed at bottom-right with a mute/resume button and volume slider.
+- The control is presented as a compact rounded floating panel with a visible Music status chip and styled slider.
+- `localStorage` persists `sounds-fishy-audio-muted` and `sounds-fishy-audio-volume`.
+- If the browser blocks audio startup, the control shows a small friendly status message and the user can click again.
+- Procedural UI sound effects are dispatched with the `sounds-fishy-ui-sound` custom event and generated through the same Web Audio context.
+- Background music and UI sound effects use separate gain nodes.
+- The Music On/Off control only starts/stops background music; UI sound effects still play from user actions when Music is Off.
+- UI sound effects use a fixed subtle volume so they remain independent from the background music mute state.
+- Themed confirmation modals replace `window.confirm` for Skip Question and End Game.
 
 ## Agent Ownership Boundaries
 

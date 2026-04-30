@@ -8,6 +8,7 @@ import {
   savePlayerName,
 } from "@/lib/player";
 import { createRoom, joinRoom } from "@/lib/roomService";
+import { playUiSound } from "./theme/audioEvents";
 
 type PendingAction = "create" | "join";
 
@@ -91,6 +92,8 @@ export function HomeForm() {
       return;
     }
 
+    playUiSound("click");
+
     const cleanName = playerName.trim();
     savePlayerName(cleanName);
     setDraftPlayerName(cleanName);
@@ -105,6 +108,7 @@ export function HomeForm() {
           : await joinRoom(roomCode, cleanName);
 
       setNotice(`Room ${result.roomCode} is ready.`);
+      playUiSound("success");
       router.push(`/room/${result.roomCode}`);
     } catch (errorValue) {
       setError(getErrorMessage(errorValue));
@@ -119,24 +123,29 @@ export function HomeForm() {
 
   return (
     <form
-      className="rounded-lg border border-[#d8e1eb] bg-white p-6 shadow-[0_20px_70px_rgba(23,32,47,0.12)] sm:p-7"
+      className="game-card relative overflow-hidden p-5 sm:p-6"
       onSubmit={handleSubmit}
     >
+      <div
+        aria-hidden="true"
+        className="absolute -right-8 -top-10 h-28 w-28 rounded-full bg-[#ffc857]/35 blur-2xl"
+      />
+      <div
+        aria-hidden="true"
+        className="absolute -bottom-10 -left-10 h-32 w-32 rounded-full bg-[#42c8f2]/30 blur-2xl"
+      />
       <div className="mb-6 flex items-start justify-between gap-4">
         <div>
-          <p className="text-sm font-semibold uppercase text-[#1d6f6a]">
+          <p className="text-sm font-extrabold uppercase text-[#0a6f98]">
             Private table
           </p>
-          <h2 className="mt-2 text-2xl font-bold text-[#121a27]">
+          <h2 className="font-display mt-2 text-3xl font-bold text-[#10243d]">
             Start here
           </h2>
         </div>
-        <span className="rounded-md bg-[#fff1ef] px-3 py-2 text-sm font-semibold text-[#a33e38]">
-          MVP
-        </span>
       </div>
 
-      <div className="grid gap-5">
+      <div className="relative grid gap-4">
         <div>
           <label
             className="mb-2 block text-sm font-semibold text-[#253247]"
@@ -146,7 +155,7 @@ export function HomeForm() {
           </label>
           <input
             autoComplete="nickname"
-            className="h-12 w-full rounded-md border border-[#c8d3df] bg-[#fbfcfe] px-4 text-base text-[#17202f] outline-none transition focus:border-[#2f9c95] focus:bg-white focus:ring-4 focus:ring-[#2f9c95]/15"
+            className="game-input h-12 w-full px-4 text-base"
             disabled={Boolean(pendingAction)}
             id={nameInputId}
             maxLength={24}
@@ -166,7 +175,7 @@ export function HomeForm() {
           </label>
           <input
             autoComplete="off"
-            className="h-12 w-full rounded-md border border-[#c8d3df] bg-[#fbfcfe] px-4 font-mono text-lg font-semibold text-[#17202f] outline-none transition placeholder:font-sans placeholder:text-base placeholder:font-normal focus:border-[#3949a3] focus:bg-white focus:ring-4 focus:ring-[#3949a3]/15"
+            className="game-input h-12 w-full px-4 font-mono text-lg font-semibold placeholder:font-sans placeholder:text-base placeholder:font-normal"
             disabled={Boolean(pendingAction)}
             id={roomCodeInputId}
             inputMode="text"
@@ -180,7 +189,7 @@ export function HomeForm() {
 
         {error ? (
           <p
-            className="rounded-md border border-[#f0b4ae] bg-[#fff1ef] px-4 py-3 text-sm font-medium text-[#8c2f29]"
+            className="rounded-2xl border border-[#ffb0a8] bg-[#fff1ef] px-4 py-3 text-sm font-bold text-[#8c2f29]"
             role="alert"
           >
             {error}
@@ -190,7 +199,7 @@ export function HomeForm() {
         {notice ? (
           <p
             aria-live="polite"
-            className="rounded-md border border-[#9fd6d1] bg-[#edf7f6] px-4 py-3 text-sm font-medium text-[#1d6f6a]"
+            className="rounded-2xl border border-[#9fd6d1] bg-[#edf7f6] px-4 py-3 text-sm font-bold text-[#1d6f6a]"
           >
             {notice}
           </p>
@@ -198,7 +207,7 @@ export function HomeForm() {
 
         <div className="grid gap-3 sm:grid-cols-2">
           <button
-            className="h-12 rounded-md bg-[#f06c64] px-5 text-base font-bold text-white transition hover:bg-[#d95851] focus:outline-none focus:ring-4 focus:ring-[#f06c64]/25 disabled:cursor-not-allowed disabled:bg-[#f0a39e]"
+            className="game-button game-button-coral h-[3.25rem] px-5 text-base font-extrabold focus:outline-none focus:ring-4 focus:ring-[#f06c64]/25"
             disabled={Boolean(pendingAction)}
             onClick={() => handleAction("create")}
             type="button"
@@ -206,7 +215,7 @@ export function HomeForm() {
             {pendingAction === "create" ? "Creating..." : "Create Room"}
           </button>
           <button
-            className="h-12 rounded-md bg-[#253247] px-5 text-base font-bold text-white transition hover:bg-[#17202f] focus:outline-none focus:ring-4 focus:ring-[#253247]/25 disabled:cursor-not-allowed disabled:bg-[#8290a3]"
+            className="game-button game-button-blue h-[3.25rem] px-5 text-base font-extrabold focus:outline-none focus:ring-4 focus:ring-[#253247]/25"
             disabled={Boolean(pendingAction)}
             onClick={() => handleAction("join")}
             type="button"

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { OceanBackground } from "./theme/OceanBackground";
 
 interface ErrorStateProps {
   title?: string;
@@ -10,20 +11,24 @@ export function ErrorState({
   message,
 }: ErrorStateProps) {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-[#f6f8fb] px-5 text-[#17202f]">
-      <div className="w-full max-w-lg rounded-lg border border-[#f0b4ae] bg-white p-7 shadow-[0_20px_70px_rgba(23,32,47,0.10)]">
-        <p className="text-sm font-semibold uppercase text-[#a33e38]">
+    <OceanBackground>
+      <div className="flex min-h-screen items-center justify-center px-5 text-[#10243d]">
+      <div className="game-card w-full max-w-lg p-7">
+        <p className="text-sm font-extrabold uppercase text-[#bf3446]">
           Room unavailable
         </p>
-        <h1 className="mt-3 text-3xl font-bold text-[#121a27]">{title}</h1>
-        <p className="mt-4 leading-7 text-[#465365]">{message}</p>
+        <h1 className="font-display mt-3 text-3xl font-bold text-[#10243d]">
+          {title}
+        </h1>
+        <p className="mt-4 font-semibold leading-7 text-[#173a56]">{message}</p>
         <Link
-          className="mt-6 inline-flex h-11 items-center justify-center rounded-md bg-[#253247] px-5 font-bold text-white transition hover:bg-[#17202f] focus:outline-none focus:ring-4 focus:ring-[#253247]/25"
+          className="game-button game-button-dark mt-6 inline-flex h-11 items-center justify-center px-5 font-extrabold focus:outline-none focus:ring-4 focus:ring-[#253247]/25"
           href="/"
         >
           Back to Home
         </Link>
       </div>
     </div>
+    </OceanBackground>
   );
 }

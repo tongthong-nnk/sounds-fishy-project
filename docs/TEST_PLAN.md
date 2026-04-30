@@ -1,6 +1,6 @@
 # Test Plan
 
-Last updated milestone: Milestone 16
+Last updated milestone: Milestone 18.3
 
 ## Local Test Plan
 
@@ -263,9 +263,9 @@ Manual browser checks:
 - Confirm exactly one player has role `guesser`.
 - Confirm exactly one player has role `truth`.
 - Confirm remaining players have role `bluffer`.
-- Confirm only the Truth Teller screen shows the correct answer.
+- Confirm Truth Teller and Bluffer screens show the correct answer.
 - Confirm the Guesser sees a waiting message and no answer input.
-- Confirm Bluffers see fake-answer instructions and no correct answer.
+- Confirm Bluffers see fake-answer instructions that tell them not to submit the exact correct answer.
 
 Expected:
 
@@ -794,6 +794,226 @@ Expected:
 - The research ledger category distribution totals 150.
 - Lint, build, and audit pass.
 
+## Milestone 17 Checkpoint
+
+Run:
+
+```powershell
+cd E:\sounds-fishy-project
+npm.cmd run lint
+npm.cmd run build
+npm.cmd audit --audit-level=moderate
+```
+
+Thai deck validation:
+
+```powershell
+cd E:\sounds-fishy-project
+(Select-String -Path lib\questions.ts -Pattern 'id: "q').Count
+Select-String -Path lib\questions.ts -Pattern 'id: "q' | ForEach-Object { $_.Line.Trim() } | Sort-Object | Group-Object | Where-Object Count -gt 1
+Select-String -Path lib\questions.ts -Pattern 'question: "' | ForEach-Object { $_.Line.Trim() } | Sort-Object | Group-Object | Where-Object Count -gt 1
+Select-String -Path lib\questions.ts -Pattern 'answer: ""'
+```
+
+Manual Thai review:
+
+- Open `lib\questions.ts` and confirm there are exactly 150 questions.
+- Confirm IDs are sequential from `q1` through `q150`.
+- Confirm all playable `question` and `answer` fields are Thai-localized where natural.
+- Confirm proper nouns remain in English only where they help recognition.
+- Confirm Thai answers are concise and do not include explanations.
+- Open `docs\QUESTION_RESEARCH.md` and confirm the English source/confidence ledger is preserved.
+- Confirm the Thai Localization Ledger has one row for each `q1` through `q150`.
+- Read at least 25 Thai questions aloud and confirm they feel casual, clear, weird, funny, and bluffable.
+
+Expected:
+
+- The question count is exactly 150.
+- Duplicate ID and duplicate Thai question checks return no rows.
+- Empty answer check returns no rows.
+- Lint, build, and audit pass.
+
+## Milestone 18 Checkpoint
+
+Run:
+
+```powershell
+cd E:\sounds-fishy-project
+npm.cmd run lint
+npm.cmd run build
+npm.cmd audit --audit-level=moderate
+npm.cmd run dev
+```
+
+Manual visual and audio checks:
+
+- Open `http://localhost:3000`.
+- Confirm the home page shows the playful ocean/fish theme, rounded typography, layered background, and themed Create Room / Join Room buttons.
+- Confirm the UI no longer reads as a generic dashboard.
+- Check 1366x768, 1440x900, and 1920x1080 desktop viewports.
+- Check a phone-width viewport and confirm stacked content remains usable.
+- Create a room and join with 4 players.
+- Confirm Lobby player cards, room code, Online/Away badges, host/current-player badges, copy buttons, Start Game, and End Game are readable.
+- Start the game.
+- Confirm Answering phase role cards, phase pill, correct-answer card, Skip Question, and answer form are readable.
+- Confirm Truth Teller and Bluffers see the correct answer.
+- Confirm the Guesser does not see the correct answer.
+- Submit answers and move to Guessing.
+- Confirm hidden answer cards look face-down and playful.
+- Confirm owner-only `Reveal My Answer` still works.
+- Confirm revealed answers are readable and Guesser Guess / Stop controls are visually distinct.
+- Finish a round.
+- Confirm Result screen scoring summary, role badges, answer reveal, scoreboard, Next Round, and End Game are readable.
+- Host clicks End Game and confirms the archived room screen looks polished and shows final scoreboard.
+- Click the bottom-right music control.
+- Confirm music starts only after user interaction.
+- Adjust the volume slider.
+- Mute the music.
+- Refresh the page and confirm volume/mute preference is remembered by the control.
+- Confirm the music does not autoplay loudly after refresh.
+- Confirm browser console has no errors during the flow.
+
+Expected:
+
+- Visual theme is colorful, playful, fish/ocean themed, and original.
+- Core gameplay behavior is unchanged.
+- Audio is optional, instrumental, browser-generated, and user-started.
+- Lint, build, and audit pass.
+
+## Milestone 18.1 Checkpoint
+
+Run:
+
+```powershell
+cd E:\sounds-fishy-project
+npm.cmd run lint
+npm.cmd run build
+npm.cmd audit --audit-level=moderate
+npm.cmd run dev
+```
+
+Manual visual fix checks:
+
+- Open `http://localhost:3000` at 1366x768.
+- Confirm no large fish or background decoration appears before the actual page content.
+- Confirm title, description, and Create/Join form are visible in the first viewport.
+- Confirm the background is colorful/ocean-themed and not plain white.
+- Confirm the Create/Join form has a clear framed game-card style.
+- Confirm display-name and room-code inputs have visible styled borders, background, and focus states.
+- Confirm Create Room and Join Room buttons are colorful, rounded, raised, and obviously clickable.
+- Confirm hover and active states feel button-like.
+- Confirm the bottom-right music control looks like a deliberate floating panel.
+- Confirm the music button has a clear frame, Music On/Off label, and styled slider.
+- Confirm mute/unmute and volume still work and preferences still persist.
+- Create a room and join with 4 players.
+- Confirm Lobby, PlayerList, and Scoreboard are layered and readable.
+- Start the game.
+- Confirm AnswerPhase has clear role, correct-answer, host-control, answer-form, and submission panels.
+- Confirm no background decoration pushes game content downward.
+- Move to Guessing.
+- Confirm hidden answer cards look like face-down game cards.
+- Confirm revealed cards look opened/active.
+- Confirm Reveal My Answer, Guess, and Stop / Bank buttons are clearly styled.
+- Move to Result.
+- Confirm the Result screen is layered, readable, and celebratory.
+- Archive/end the room and confirm the Archived Room screen is polished.
+- Repeat quick layout checks at 1440x900 and 1920x1080.
+- Check a phone-width viewport and confirm the app stacks without breaking core actions.
+- Confirm no console errors.
+
+Expected:
+
+- Decorative background elements never create scroll before content.
+- The app reads as a colorful party game UI instead of a plain dashboard.
+- Music control no longer looks like raw browser controls.
+- Gameplay behavior remains unchanged.
+- Lint, build, and audit pass.
+
+## Milestone 18.2 Checkpoint
+
+Run:
+
+```powershell
+cd E:\sounds-fishy-project
+npm.cmd run lint
+npm.cmd run build
+npm.cmd audit --audit-level=moderate
+npm.cmd run dev
+```
+
+Manual final visual/audio checks:
+
+- Open `http://localhost:3000` at 1366x768.
+- Confirm there is no visible MVP badge.
+- Confirm the bottom decoration no longer looks like broken or repeating seaweed icons.
+- Confirm the background remains colorful, ocean-themed, and behind content.
+- Confirm home content still fits without scrolling.
+- Confirm the music control defaults visually to Music On on first visit.
+- Click the page if needed and confirm music starts or resumes without console errors.
+- Mute music and refresh; confirm the muted preference is respected.
+- Adjust volume and refresh; confirm the volume preference is reflected.
+- Confirm subtle button sound effects play when audio is on.
+- Confirm sound effects do not play when muted.
+- Create a room.
+- Confirm lobby content is vertically centered and polished.
+- Join with other players and confirm the player list still grows naturally.
+- Start game.
+- In AnswerPhase, click Skip Question.
+- Confirm a themed modal appears instead of a browser confirm.
+- Cancel skip and confirm nothing changes.
+- Open skip modal again and confirm Skip Question works.
+- Click End Game.
+- Confirm a themed End Game modal appears instead of a browser confirm.
+- Cancel and confirm the room continues.
+- Confirm End Game and verify the archived screen appears.
+- Confirm no default browser confirm appears in these flows.
+- Confirm no console errors.
+- Confirm layout still works at 1440x900 and 1920x1080.
+- Confirm mobile width is usable as a fallback.
+
+Expected:
+
+- Bottom decoration is subtle and non-distracting.
+- Music is enabled by default visually, starts only after interaction if needed, and respects saved mute/volume.
+- UI sound effects are subtle and obey mute/volume.
+- Skip Question and End Game use themed confirmation dialogs.
+- Gameplay behavior remains unchanged.
+- Lint, build, and audit pass.
+
+## Milestone 18.3 Checkpoint
+
+Run:
+
+```powershell
+cd E:\sounds-fishy-project
+npm.cmd run lint
+npm.cmd run build
+npm.cmd audit --audit-level=moderate
+```
+
+Manual audio and lobby copy checks:
+
+- Open the home page.
+- Turn Music Off.
+- Click Create Room or another action button.
+- Confirm button/UI sound effects still play while Music is Off.
+- Turn Music On and confirm background music can play or resume after interaction.
+- Create a room and inspect the lobby.
+- Confirm copy buttons say `Copy Code` and `Copy Link`.
+- Confirm both labels stay on one line at desktop widths.
+- Click Copy Code and confirm status says only `Copied`.
+- Click Copy Link and confirm status says only `Copied`.
+- Confirm the copied badge is compact and does not push the lobby layout awkwardly.
+- Confirm lobby layout remains clean at 1366x768 and 1440x900.
+- Confirm no console errors.
+
+Expected:
+
+- Music On/Off controls background music only.
+- UI sound effects are still procedural and play only from user actions.
+- Lobby copy buttons are shorter, nowrap, and cleaner.
+- Lint, build, and audit pass.
+
 ## Multi-Browser Test Plan
 
 Later gameplay milestones should be tested with multiple browser sessions:
@@ -857,8 +1077,8 @@ Mobile is secondary. The app should remain usable on a phone-sized screen:
 - Confirm exactly one Guesser.
 - Confirm exactly one Truth Teller.
 - Confirm remaining players are Bluffers.
-- Confirm only Truth Teller sees correct answer.
-- Confirm Bluffers can submit fake answers.
+- Confirm Truth Teller and Bluffers see the correct answer during answering.
+- Confirm Bluffers can submit fake answers but not the exact correct answer.
 - Confirm Guesser waits and sees submission status.
 
 ### Guessing
@@ -948,8 +1168,9 @@ Run this checklist for final MVP acceptance.
 - [ ] Confirm exactly one player is Guesser.
 - [ ] Confirm exactly one player is Truth Teller.
 - [ ] Confirm remaining players are Bluffers.
-- [ ] Confirm only the Truth Teller sees the correct answer.
-- [ ] Confirm Bluffers do not see the correct answer.
+- [ ] Confirm the Truth Teller sees the correct answer.
+- [ ] Confirm Bluffers also see the correct answer during answering.
+- [ ] Confirm Bluffers are instructed to use it as context and submit a believable fake.
 - [ ] Confirm the Guesser sees waiting/submission status and no answer input.
 - [ ] Confirm roles are clear only to the current player during answering.
 
@@ -958,6 +1179,7 @@ Run this checklist for final MVP acceptance.
 - [ ] Truth Teller submits the prefilled correct answer.
 - [ ] Each Bluffer submits a fake answer.
 - [ ] Confirm empty Bluffer answers are rejected.
+- [ ] Confirm the exact correct answer is rejected for Bluffers.
 - [ ] Confirm the Guesser sees submitted status update realtime.
 - [ ] Confirm player documents store submitted answers and `hasSubmitted`.
 
@@ -1065,11 +1287,23 @@ Run this checklist for final MVP acceptance.
 ### Desktop Viewports
 
 - [ ] Test 1366x768.
-- [ ] Confirm Home, Lobby, Answering, Guessing, Result, and Next Round screens are readable.
+- [ ] Confirm Home, Lobby, Answering, Guessing, Result, Archived Room, and Next Round screens are readable.
 - [ ] Test 1440x900.
 - [ ] Confirm the question, role, answer cards, player list, and scoreboard are visible without excessive scrolling.
 - [ ] Test 1920x1080.
 - [ ] Confirm horizontal space is used cleanly and text is not oversized.
+- [ ] Confirm the ocean background, fish decorations, cards, and fixed music control do not hide important actions.
+
+### Audio Sanity
+
+- [ ] Confirm music is visually On by default on first visit.
+- [ ] Confirm audio starts only after user interaction if the browser blocks autoplay.
+- [ ] Click the music control and confirm a light instrumental loop starts.
+- [ ] Adjust the volume slider and confirm volume changes.
+- [ ] Mute and confirm audio stops.
+- [ ] Refresh and confirm saved music preference is reflected in the control.
+- [ ] Confirm button/reveal/guess/success/warning sound effects play only when audio is on.
+- [ ] Confirm the control does not cover core game buttons on desktop or mobile.
 
 ### Secondary Mobile Sanity Check
 
@@ -1099,7 +1333,7 @@ Run this checklist for final MVP acceptance.
 - [ ] Host can start the game.
 - [ ] Roles are assigned correctly.
 - [ ] Truth Teller sees the correct answer.
-- [ ] Bluffers do not see the correct answer.
+- [ ] Bluffers see the correct answer during answering so they can create better fake answers.
 - [ ] Guesser does not see roles during guessing.
 - [ ] All non-guessers can submit answers.
 - [ ] Game moves to guessing automatically.

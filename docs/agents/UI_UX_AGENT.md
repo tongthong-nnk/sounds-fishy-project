@@ -1,6 +1,6 @@
 # UI_UX_AGENT
 
-Last updated milestone: Milestone 15
+Last updated milestone: Milestone 18.3
 
 ## Responsibility
 
@@ -21,6 +21,9 @@ Last updated milestone: Milestone 15
 - Use horizontal room for player lists, scoreboards, and phase details.
 - Keep question, current role, player list, answers, and scoreboard easy to see.
 - Keep Skip Question and End Game controls compact and host-only.
+- Use an original playful ocean/fish party-game style.
+- Use role color language: gold Guesser, coral Bluffer, blue Truth Teller.
+- Keep optional music controls small, fixed bottom-right, and out of the way of core actions.
 
 ## Constraints
 
@@ -74,7 +77,7 @@ Completed:
 
 - Wire Start Game button for hosts when enough players are present.
 - Add a role-aware AnswerPhase layout.
-- Show correct answer only to the Truth Teller.
+- Show correct answer to the Truth Teller and Bluffers.
 - Show waiting state for Guesser.
 - Show fake-answer instruction for Bluffers.
 
@@ -214,10 +217,103 @@ Completed:
 - Added archived room screen with ended-room message, final scoreboard, and Back to Home.
 - Kept the existing desktop-first layout structure.
 
+### Post-Milestone 16 Scoped Answer Visibility Adjustment
+
+Completed:
+
+- AnswerPhase now shows the correct answer to Bluffers as context.
+- Bluffer copy tells players to submit a believable fake answer, not the exact correct answer.
+- Guesser still sees only waiting/submission status during answering.
+- Guessing and result layouts were not redesigned.
+
+### Milestone 17
+
+Planned scope:
+
+- Make the playable deck easier for Thai friends to read aloud in Discord.
+- Keep questions casual, concise, and bluffable in Thai.
+- Keep proper nouns in English when that improves recognition.
+
+Completed:
+
+- Localized all playable questions and answers into Thai where natural.
+- Kept important proper nouns such as BBC, NASA, Play-Doh, Bubble Wrap, and Monty Python in English.
+- No layout changes were required.
+
+### Milestone 18
+
+Planned scope:
+
+- Replace the plain dashboard feeling with a playful original fish/ocean theme.
+- Improve home, lobby, answering, guessing, result, archived room, player list, scoreboard, buttons, cards, and badges.
+- Add layered background elements with CSS/SVG instead of copyrighted artwork.
+- Add optional cheerful instrumental background music controls.
+- Keep desktop-first readability and mobile fallback.
+
+Completed:
+
+- Added layered ocean background, waves, bubbles, and subtle original fish illustrations.
+- Added rounded Thai-friendly typography and stronger title treatment.
+- Restyled cards, buttons, inputs, phase labels, role badges, player lists, scoreboard, answer cards, result screen, and archived room.
+- Made hidden guessing cards feel face-down while keeping roles hidden.
+- Added a fixed bottom-right music control with mute/resume and volume slider.
+- Kept gameplay flow and UI copy behavior intact.
+
+### Milestone 18.1
+
+Planned scope:
+
+- Fix observed manual-review issues with oversized decorations, plain home form, plain backgrounds, weak card framing, stiff typography, and raw-looking music controls.
+- Keep first-viewport content visible at 1366x768.
+- Keep desktop-first playability intact.
+
+Completed:
+
+- Reduced and fixed background decorations behind content so users no longer scroll past large fish.
+- Tightened home hero spacing and mascot size.
+- Strengthened game-card, soft-panel, input, button, role badge, and hidden-card styling.
+- Restyled the music control as an obvious compact floating control with visible status, button, and custom slider.
+- Switched display typography from Mitr to Mali for a more playful Thai-supported feel.
+
+### Milestone 18.2
+
+Planned scope:
+
+- Replace the awkward bottom decoration with a subtler ocean layer.
+- Remove visible MVP labels.
+- Make music feel enabled by default without breaking autoplay rules.
+- Add subtle sound effects for important UI actions.
+- Replace browser confirm popups with themed dialogs.
+- Center the lobby layout vertically.
+
+Completed:
+
+- Reworked bottom wave styling into soft background bands instead of repeating icon-like shapes.
+- Removed the visible home MVP badge.
+- Updated music control behavior so first visits show Music On and saved mute/volume preferences are respected.
+- Added subtle procedural sound effects that obey the music mute/volume setting.
+- Added themed Skip Question and End Game confirmation dialogs.
+- Updated Lobby to center content in the viewport on desktop/laptop sizes.
+
+### Milestone 18.3
+
+Planned scope:
+
+- Make button sounds feel responsive even when background music is off.
+- Shorten lobby copy controls so they stay clean and single-line.
+- Keep the improved Milestone 18.1/18.2 visual styling.
+
+Completed:
+
+- UI sound effects now play independently from the Music On/Off background toggle.
+- Lobby copy controls now read `Copy Code` and `Copy Link`.
+- Copy buttons use nowrap and compact minimum widths.
+- Copy feedback now says only `Copied`.
+
 ## Open Questions
 
 - None.
 
 ## Last Updated Milestone
 
-Milestone 15
+Milestone 18.3

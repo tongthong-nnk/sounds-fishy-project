@@ -4,6 +4,8 @@ import Link from "next/link";
 import { useState } from "react";
 import { HostArchiveButton } from "./HostArchiveButton";
 import { PlayerList } from "./PlayerList";
+import { playUiSound } from "./theme/audioEvents";
+import { OceanBackground } from "./theme/OceanBackground";
 import type { Player, Room } from "@/lib/types";
 
 interface LobbyProps {
@@ -30,12 +32,14 @@ export function Lobby({
     currentPlayer?.isHost || currentPlayer?.playerId === room.hostId || false;
   const canStart = players.length >= 4;
 
-  async function copyToClipboard(value: string, successMessage: string) {
+  async function copyToClipboard(value: string) {
     try {
       await navigator.clipboard.writeText(value);
-      setCopyStatus(successMessage);
+      setCopyStatus("Copied");
+      playUiSound("success");
     } catch {
       setCopyStatus("Copy failed");
+      playUiSound("warning");
     }
   }
 
@@ -52,11 +56,13 @@ export function Lobby({
       return;
     }
 
+    playUiSound("click");
     setIsStarting(true);
     setStartError("");
 
     try {
       await onStartGame();
+      playUiSound("success");
     } catch (error) {
       setStartError(
         error instanceof Error ? error.message : "Could not start the game.",
@@ -66,45 +72,46 @@ export function Lobby({
   }
 
   return (
-    <main className="min-h-screen bg-[#f6f8fb] px-5 py-7 text-[#17202f] sm:px-8 lg:px-10">
-      <section className="mx-auto grid max-w-6xl gap-6 lg:grid-cols-[0.9fr_1.1fr]">
+    <OceanBackground>
+      <main className="flex min-h-screen items-center px-5 py-7 text-[#10243d] sm:px-8 lg:px-10">
+      <section className="mx-auto grid w-full max-w-6xl gap-6 lg:grid-cols-[0.9fr_1.1fr]">
         <div className="grid gap-6">
-          <div className="rounded-lg border border-[#d8e1eb] bg-white p-6 shadow-[0_20px_70px_rgba(23,32,47,0.10)]">
+          <div className="game-card p-6">
             <div className="flex flex-wrap items-start justify-between gap-3">
               <div>
-                <p className="text-sm font-semibold uppercase text-[#1d6f6a]">
+                <p className="text-sm font-extrabold uppercase text-[#0a6f98]">
                   Lobby
                 </p>
-                <h1 className="mt-3 text-4xl font-bold text-[#121a27]">
+                <h1 className="party-title mt-3 text-4xl font-bold">
                   Room {room.roomCode}
                 </h1>
               </div>
               <Link
-                className="inline-flex h-10 items-center rounded-md border border-[#d8e1eb] bg-[#fbfcfe] px-4 text-sm font-bold text-[#253247] transition hover:bg-white focus:outline-none focus:ring-4 focus:ring-[#253247]/15"
+                className="game-button game-button-soft inline-flex h-10 items-center px-4 text-sm font-extrabold focus:outline-none focus:ring-4 focus:ring-[#253247]/15"
                 href="/"
               >
                 Back to Home
               </Link>
             </div>
-            <div className="mt-5 flex flex-col gap-3 sm:flex-row">
+            <div className="mt-5 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
               <button
-                className="h-11 rounded-md bg-[#253247] px-5 font-bold text-white transition hover:bg-[#17202f] focus:outline-none focus:ring-4 focus:ring-[#253247]/25"
-                onClick={() => copyToClipboard(room.roomCode, "Code copied")}
+                className="game-button game-button-dark h-11 min-w-[7.5rem] whitespace-nowrap px-5 font-extrabold focus:outline-none focus:ring-4 focus:ring-[#253247]/25"
+                onClick={() => copyToClipboard(room.roomCode)}
                 type="button"
               >
-                Copy Room Code
+                Copy Code
               </button>
               <button
-                className="h-11 rounded-md bg-[#3949a3] px-5 font-bold text-white transition hover:bg-[#2f3f91] focus:outline-none focus:ring-4 focus:ring-[#3949a3]/25"
-                onClick={() => copyToClipboard(getRoomLink(), "Link copied")}
+                className="game-button game-button-blue h-11 min-w-[7.5rem] whitespace-nowrap px-5 font-extrabold focus:outline-none focus:ring-4 focus:ring-[#3949a3]/25"
+                onClick={() => copyToClipboard(getRoomLink())}
                 type="button"
               >
-                Copy Room Link
+                Copy Link
               </button>
               {copyStatus ? (
                 <span
                   aria-live="polite"
-                  className="inline-flex h-11 items-center rounded-md bg-[#edf7f6] px-4 text-sm font-bold text-[#1d6f6a]"
+                  className="status-pill inline-flex h-11 items-center whitespace-nowrap bg-[#edf7f6] px-4 text-sm text-[#1d6f6a]"
                 >
                   {copyStatus}
                 </span>
@@ -112,21 +119,21 @@ export function Lobby({
             </div>
           </div>
 
-          <div className="rounded-lg border border-[#d8e1eb] bg-white p-6 shadow-sm">
-            <p className="text-sm font-semibold uppercase text-[#3949a3]">
+          <div className="game-card p-6">
+            <p className="text-sm font-extrabold uppercase text-[#0a6f98]">
               Phase
             </p>
-            <h2 className="mt-2 text-2xl font-bold text-[#121a27]">
+            <h2 className="font-display mt-2 text-2xl font-bold text-[#10243d]">
               Waiting for players
             </h2>
-            <p className="mt-3 leading-7 text-[#465365]">
+            <p className="mt-3 font-semibold leading-7 text-[#173a56]">
               The host can start once at least 4 players have joined.
             </p>
 
             {isHost ? (
               <>
                 <button
-                  className="mt-5 h-12 w-full rounded-md bg-[#f06c64] px-5 font-bold text-white transition hover:bg-[#d95851] focus:outline-none focus:ring-4 focus:ring-[#f06c64]/25 disabled:cursor-not-allowed disabled:bg-[#f0a39e]"
+                  className="game-button game-button-coral mt-5 h-12 w-full px-5 font-extrabold focus:outline-none focus:ring-4 focus:ring-[#f06c64]/25"
                   disabled={!canStart || isStarting}
                   onClick={handleStartGame}
                   title={
@@ -159,7 +166,7 @@ export function Lobby({
                 />
               </>
             ) : (
-              <p className="mt-5 rounded-md bg-[#eef2ff] px-4 py-3 text-sm font-semibold text-[#3949a3]">
+              <p className="mt-5 rounded-2xl bg-[#eefbff] px-4 py-3 text-sm font-bold text-[#0a6f98]">
                 Waiting for the host to start the game.
               </p>
             )}
@@ -167,7 +174,7 @@ export function Lobby({
 
           {!currentPlayer ? (
             <div
-              className="rounded-lg border border-[#f0b4ae] bg-[#fff1ef] p-4 text-sm font-semibold text-[#8c2f29]"
+              className="rounded-2xl border border-[#f0b4ae] bg-[#fff1ef] p-4 text-sm font-semibold text-[#8c2f29]"
               role="alert"
             >
               This browser is not joined to the room yet. Use Back to Home and
@@ -183,5 +190,6 @@ export function Lobby({
         />
       </section>
     </main>
+    </OceanBackground>
   );
 }

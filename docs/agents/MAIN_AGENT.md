@@ -1,6 +1,6 @@
 # MAIN_AGENT
 
-Last updated milestone: Milestone 16
+Last updated milestone: Milestone 18.3
 
 ## Responsibility
 
@@ -15,10 +15,10 @@ Last updated milestone: Milestone 16
 
 ## Current Decisions
 
-- Milestone 16 is implemented and awaiting user question-deck review.
-- Milestone 16 is scoped to replacing the generic deck with a sourced 150-question English bizarre fun-fact deck.
+- Milestone 18.3 is implemented and awaiting audio behavior and lobby copy-button review.
+- Milestone 18.3 is scoped to UI sound-effect independence and cleaner lobby copy controls.
 - Do not change deployment configuration unless needed.
-- Do not commit, push, or deploy Milestone 16 until the user explicitly approves.
+- Do not commit, push, or deploy Milestone 18.3 until the user explicitly approves.
 - The project root is `E:\sounds-fishy-project`.
 - Existing files must be preserved and inspected before updates.
 - Multi-agent workflow is simulated through markdown files, not real parallel agents.
@@ -649,6 +649,130 @@ Completed:
 - Updated the project docs and active agent notes.
 - Verified lint, build, audit, and deck integrity checks.
 
+### Milestone 17
+
+Relevant agents:
+
+- MAIN_AGENT.
+- ARCHITECT_AGENT.
+- GAME_LOGIC_AGENT.
+- UI_UX_AGENT.
+- QA_AGENT.
+
+Planned scope:
+
+- Localize the approved 150-question deck into natural Thai.
+- Keep IDs sequential from `q1` through `q150`.
+- Keep the existing `Question` type and local `lib/questions.ts` storage.
+- Preserve English source and confidence information in `docs/QUESTION_RESEARCH.md`.
+- Do not change game logic, scoring, room lifecycle, deployment configuration, commit, push, or deploy.
+
+Completed:
+
+- Updated `lib/questions.ts` to 150 Thai-localized playable questions and answers.
+- Added a Thai Localization Ledger to `docs/QUESTION_RESEARCH.md`.
+- Updated README, rules, spec, test plan, checklist, and active agent docs.
+- Verified lint, build, audit, and deck integrity checks.
+
+### Milestone 18
+
+Relevant agents:
+
+- MAIN_AGENT.
+- ARCHITECT_AGENT.
+- UI_UX_AGENT.
+- QA_AGENT.
+
+Planned scope:
+
+- Add an original playful fish/ocean visual identity.
+- Polish home, lobby, answering, guessing, result, archived room, player list, scoreboard, cards, buttons, badges, and phase indicators.
+- Add optional instrumental background music through browser-generated Web Audio.
+- Persist music mute and volume preferences.
+- Do not change gameplay logic, scoring, Firestore schema, question deck, deployment configuration, commit, push, or deploy.
+
+Completed:
+
+- Added reusable theme/audio components.
+- Updated global typography and shared theme styling.
+- Applied the visual theme across existing screens.
+- Added optional bottom-right music controls.
+- Updated README, technical spec, test plan, checklist, and active agent docs.
+- Verified lint, build, and audit.
+
+### Milestone 18.1
+
+Relevant agents:
+
+- MAIN_AGENT.
+- ARCHITECT_AGENT.
+- UI_UX_AGENT.
+- QA_AGENT.
+
+Planned scope:
+
+- Fix manual-review visual issues from Milestone 18.
+- Ensure decorations cannot create layout scroll before content.
+- Strengthen home form, cards, buttons, panels, hidden cards, and music control styling.
+- Improve playful Thai-supported typography.
+- Keep the change UI-only.
+
+Completed:
+
+- Constrained background fish/waves/bubbles to non-layout fixed/behind-content decoration.
+- Tightened home first-viewport layout.
+- Restyled form inputs, buttons, game cards, hidden cards, and the music control.
+- Updated README, technical spec, test plan, checklist, and active agent docs.
+- Verified lint, build, and audit.
+
+### Milestone 18.2
+
+Relevant agents:
+
+- MAIN_AGENT.
+- ARCHITECT_AGENT.
+- UI_UX_AGENT.
+- QA_AGENT.
+
+Planned scope:
+
+- Fix final visual/audio review issues.
+- Redesign bottom decoration.
+- Default music visually to On while respecting saved preferences and autoplay restrictions.
+- Add subtle procedural UI sound effects.
+- Replace `window.confirm` with themed confirmation modals.
+- Remove visible MVP labels.
+- Keep gameplay, schema, scoring, lifecycle, deck, deployment, commit, push, and deploy out of scope.
+
+Completed:
+
+- Updated bottom decoration, audio control behavior, sound effects, modals, lobby centering, and UI labels.
+- Updated README, technical spec, test plan, checklist, and active agent docs.
+- Verified lint, build, and audit.
+
+### Milestone 18.3
+
+Relevant agents:
+
+- MAIN_AGENT.
+- ARCHITECT_AGENT.
+- UI_UX_AGENT.
+- QA_AGENT.
+
+Planned scope:
+
+- Make UI sound effects independent from the Music On/Off background music toggle.
+- Keep Music On/Off scoped to background music.
+- Shorten and stabilize Lobby copy button labels.
+- Keep gameplay, schema, scoring, lifecycle, deck, deployment, commit, push, and deploy out of scope.
+
+Completed:
+
+- Split background music and UI effect gain paths.
+- Updated lobby copy button text and copied status.
+- Updated README, technical spec, test plan, checklist, and active agent docs.
+- Verified lint, build, and audit.
+
 Not in scope:
 
 - Changing deployment configuration unless required.
@@ -660,4 +784,4 @@ Not in scope:
 
 ## Last Updated Milestone
 
-Milestone 16
+Milestone 18.3

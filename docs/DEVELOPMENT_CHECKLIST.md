@@ -1,11 +1,11 @@
 # Development Checklist
 
-Last updated milestone: Milestone 16
+Last updated milestone: Milestone 18.3
 
 ## Current Status
 
-- Current milestone: Milestone 16 implemented; awaiting question-deck review.
-- Next step: review the Milestone 16 samples and run the question deck validation checks in `docs/TEST_PLAN.md`.
+- Current milestone: Milestone 18.3 implemented; awaiting audio behavior and lobby copy-button review.
+- Next step: run the Milestone 18.3 manual checks in `docs/TEST_PLAN.md`.
 - Rule: Do not commit, push, deploy, or consider the MVP ready for friends until user approval.
 
 ## Milestone Checklist
@@ -326,6 +326,81 @@ Completion criteria:
 - [x] `npm.cmd run build` passes.
 - [x] `npm.cmd audit --audit-level=moderate` passes.
 
+### Milestone 18: Visual Theme, Playful UI Polish, And Background Music
+
+- [x] MAIN_AGENT identifies relevant agents.
+- [x] Relevant agent docs are updated with planned work.
+- [x] Original playful fish/ocean theme is added.
+- [x] Theme avoids copied commercial artwork, layout, typography, icons, card design, and trade dress.
+- [x] Rounded Thai-readable typography is configured.
+- [x] Layered ocean background, waves, bubbles, and original fish SVG decorations are added.
+- [x] Cards, buttons, inputs, badges, phase labels, answer cards, scoreboard, result screen, and archived room screen are visually polished.
+- [x] Role colors support Guesser, Bluffer, and Truth Teller roles.
+- [x] Hidden guessing cards feel face-down while keeping roles hidden.
+- [x] Optional instrumental background music is generated with Web Audio API.
+- [x] Music starts only after user action and does not autoplay loudly.
+- [x] Bottom-right mute/resume and volume controls exist.
+- [x] Music mute and volume preferences persist in localStorage.
+- [x] Gameplay logic, Firestore schema, scoring, room lifecycle, question deck, and deployment config are unchanged.
+- [x] `npm.cmd run lint` passes.
+- [x] `npm.cmd run build` passes.
+- [x] `npm.cmd audit --audit-level=moderate` passes.
+
+### Milestone 18.1: Visual Theme Fixes After Manual Review
+
+- [x] MAIN_AGENT identifies relevant agents.
+- [x] Relevant agent docs are updated with planned work.
+- [x] Giant decorative fish/background elements are constrained to non-layout fixed decoration.
+- [x] Home page content and form fit in the first 1366x768 viewport.
+- [x] Ocean background remains colorful without overpowering content.
+- [x] Home Create/Join card, inputs, and buttons have stronger game-like styling.
+- [x] Game cards and soft panels have stronger borders, shadows, color, and layering.
+- [x] Hidden answer cards have stronger face-down styling.
+- [x] Music control is restyled as a deliberate floating panel.
+- [x] Music control keeps mute/resume, volume slider, and localStorage persistence.
+- [x] Display typography is changed to a more playful Thai-supported font.
+- [x] Gameplay logic, scoring, Firestore schema, room lifecycle, question deck, and deployment config are unchanged.
+- [x] `npm.cmd run lint` passes.
+- [x] `npm.cmd run build` passes.
+- [x] `npm.cmd audit --audit-level=moderate` passes.
+
+### Milestone 18.2: Final Visual And Audio Polish Fixes
+
+- [x] MAIN_AGENT identifies relevant agents.
+- [x] Relevant agent docs are updated with planned work.
+- [x] Bottom wave/seaweed decoration is redesigned so it no longer looks like broken repeated icons.
+- [x] Music defaults visually to On for first visits.
+- [x] Music still starts only after user interaction when browser policy requires it.
+- [x] Saved muted preference is respected.
+- [x] Saved volume preference is respected.
+- [x] Visible MVP labels are removed from UI.
+- [x] Lobby content is vertically centered on desktop/laptop viewports.
+- [x] Procedural UI sound effects are added for click, reveal, guess, success, and warning actions.
+- [x] UI sound effects respect mute and volume.
+- [x] Skip Question uses a themed confirmation modal instead of `window.confirm`.
+- [x] End Game uses a themed confirmation modal instead of `window.confirm`.
+- [x] Improved Milestone 18.1 styling is preserved.
+- [x] Gameplay logic, scoring, Firestore schema, room lifecycle, question deck, and deployment config are unchanged.
+- [x] `npm.cmd run lint` passes.
+- [x] `npm.cmd run build` passes.
+- [x] `npm.cmd audit --audit-level=moderate` passes.
+
+### Milestone 18.3: Audio Behavior And Lobby Copy-Button UI Fixes
+
+- [x] MAIN_AGENT identifies relevant agents.
+- [x] Relevant agent docs are updated with planned work.
+- [x] UI sound effects no longer depend on the background music mute state.
+- [x] Music Off stops only background music.
+- [x] UI sound effects still play from user actions when Music is Off.
+- [x] UI effects remain procedural Web Audio with no external assets.
+- [x] Lobby copy labels are changed to `Copy Code` and `Copy Link`.
+- [x] Lobby copy labels are styled with `whitespace-nowrap`.
+- [x] Copy success status now says only `Copied`.
+- [x] Gameplay logic, scoring, Firestore schema, room lifecycle, question deck, and deployment config are unchanged.
+- [x] `npm.cmd run lint` passes.
+- [x] `npm.cmd run build` passes.
+- [x] `npm.cmd audit --audit-level=moderate` passes.
+
 ## Completed Milestone History
 
 ### Milestone 0
@@ -603,4 +678,69 @@ Completed question deck quality upgrade:
 - Included only high- and medium-confidence facts in the final deck.
 - Documented excluded viral myths and low-confidence facts.
 - Updated README, technical spec, game rules, test plan, checklist, and active agent docs.
+- Verified `npm.cmd run lint`, `npm.cmd run build`, and `npm.cmd audit --audit-level=moderate`.
+
+### Milestone 17
+
+Completed Thai question deck localization:
+
+- Localized all 150 playable question texts in `lib\questions.ts` into natural Thai.
+- Localized all 150 playable answers into Thai where natural.
+- Kept English proper nouns where they are clearer for Thai players.
+- Preserved IDs from `q1` through `q150`.
+- Kept the existing `Question` type.
+- Did not change game logic, scoring, room lifecycle, or deployment configuration.
+- Updated `docs\QUESTION_RESEARCH.md` with a Thai Localization Ledger while preserving English source and confidence information.
+- Updated README, game rules, technical spec, test plan, checklist, and relevant agent docs.
+- Verified `npm.cmd run lint`, `npm.cmd run build`, and `npm.cmd audit --audit-level=moderate`.
+
+### Milestone 18
+
+Completed visual theme, UI polish, and optional procedural music:
+
+- Added an original ocean/fish party-game visual identity.
+- Added reusable theme components for background, fish illustrations, role badges, and volume control.
+- Replaced the plain dashboard feel with layered backgrounds, playful rounded typography, themed cards, role colors, and polished buttons.
+- Added face-down styling for hidden guessing cards and brighter result/archive presentation.
+- Added optional Web Audio API background music with mute/resume and volume controls.
+- Persisted music mute and volume preferences in localStorage.
+- Kept gameplay logic, Firestore schema, scoring, room lifecycle, question deck, and deployment configuration unchanged.
+- Verified `npm.cmd run lint`, `npm.cmd run build`, and `npm.cmd audit --audit-level=moderate`.
+
+### Milestone 18.1
+
+Completed focused visual/theme fixes after manual review:
+
+- Hardened `OceanBackground` so decorative fish, bubbles, and waves are behind content and cannot push content down.
+- Tightened the home page first-viewport layout for 1366x768.
+- Strengthened the home form, inputs, buttons, game cards, soft panels, and hidden answer card styling.
+- Restyled the music control as a compact floating panel with a visible status chip, framed button, and styled slider.
+- Switched the display font to a more playful Thai-supported font while keeping a readable Thai body font.
+- Kept gameplay logic, scoring, Firestore schema, room lifecycle, question deck, and deployment configuration unchanged.
+- Verified `npm.cmd run lint`, `npm.cmd run build`, and `npm.cmd audit --audit-level=moderate`.
+
+### Milestone 18.2
+
+Completed final visual/audio polish fixes:
+
+- Replaced the awkward repeated bottom decoration with softer wave/coral-style background bands.
+- Made music default visually to On, while still respecting browser autoplay limits and saved mute/volume preferences.
+- Added subtle procedural UI sound effects for clicks, reveals, guesses, success, and warning actions.
+- Removed visible MVP text from the home UI.
+- Centered the lobby content vertically on desktop/laptop viewports.
+- Replaced default browser confirmation popups with themed `ConfirmDialog` modals for Skip Question and End Game.
+- Kept gameplay logic, scoring, Firestore schema, room lifecycle, question deck, and deployment configuration unchanged.
+- Verified `npm.cmd run lint`, `npm.cmd run build`, and `npm.cmd audit --audit-level=moderate`.
+
+### Milestone 18.3
+
+Completed scoped audio and lobby copy-button fixes:
+
+- Split background music and UI sound effects into separate Web Audio gain paths.
+- Kept Music On/Off scoped to the background music loop only.
+- Let procedural UI sound effects play from user actions even when Music is Off.
+- Shortened Lobby copy button labels to `Copy Code` and `Copy Link`.
+- Made copy labels nowrap and compact.
+- Changed copy success feedback to `Copied`.
+- Kept gameplay logic, scoring, Firestore schema, room lifecycle, question deck, and deployment configuration unchanged.
 - Verified `npm.cmd run lint`, `npm.cmd run build`, and `npm.cmd audit --audit-level=moderate`.

@@ -1,10 +1,12 @@
 ﻿# Question Research
 
-Last updated milestone: Milestone 16
+Last updated milestone: Milestone 17
 
 ## Purpose
 
-This document is the source-of-truth ledger for the 150-question English bizarre fun-fact deck in `lib/questions.ts`.
+This document is the source-of-truth ledger for the 150-question bizarre fun-fact deck in `lib/questions.ts`.
+
+Milestone 17 localizes the playable deck into natural Thai for Thai Discord play, while preserving the approved English source and confidence trail below.
 
 Milestone 16 replaces the earlier generic trivia deck with weird-but-true prompts designed for bluffing:
 
@@ -16,11 +18,12 @@ Milestone 16 replaces the earlier generic trivia deck with weird-but-true prompt
 
 ## Summary
 
-- Final deck size: 150 questions.
+- Final deck size: 150 Thai-localized questions.
 - Final IDs: `q1` through `q150`.
 - Final confidence levels: high or medium only.
 - Low-confidence facts are excluded.
-- Question text is paraphrased in original wording and is not copied from commercial card games.
+- Thai question text is localized for natural read-aloud play, not translated literally.
+- English source and confidence information is preserved.
 
 ## Category Distribution
 
@@ -43,6 +46,8 @@ Milestone 16 replaces the earlier generic trivia deck with weird-but-true prompt
 | Low | 0 |
 
 ## Research Ledger
+
+The table below preserves the approved English fact trail, source notes, and confidence levels from Milestone 16.
 
 | id | category | question | answer | why it works for bluffing | source title or URL | confidence |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -196,6 +201,161 @@ Milestone 16 replaces the earlier generic trivia deck with weird-but-true prompt
 | q148 | Language, pop culture, sports, and games | Scrabble was first developed under what earlier name? | Lexiko | Board-game history with a strange name. | National Scrabble Association and Hasbro history summaries | high |
 | q149 | Language, pop culture, sports, and games | Atari famously buried thousands of unsold game cartridges in what U.S. state? | New Mexico | Pop-culture legend confirmed by excavation. | Smithsonian: Atari game cartridge landfill | high |
 | q150 | Language, pop culture, sports, and games | The Ouija board patent test reportedly asked the board to spell what? | Patent officer's name | Weird product history, but "reportedly" keeps nuance. | Smithsonian: strange history of the Ouija board | medium |
+
+## Thai Localization Ledger
+
+| id | Thai question | Thai answer | localization note |
+| --- | --- | --- | --- |
+| q1 | ชาวกรีกและโรมันโบราณเคยใช้อะไรแทนผ้าพันแผล? | ใยแมงมุม | Natural Thai example style from the user's brief. |
+| q2 | ชาวกรีกและโรมันบางคนใช้อะไรก่อนจะมีกระดาษชำระ? | ก้อนหิน | Uses the understandable object instead of the technical term `pessoi`. |
+| q3 | ช่างซักผ้าโรมันโบราณใช้น้ำอะไรช่วยทำความสะอาดเสื้อผ้า? | ปัสสาวะ | Keeps the punchline short and funny. |
+| q4 | ในโรคระบาดที่ Strasbourg ปี 1518 ผู้คนหยุดทำอะไรไม่ได้? | เต้น | Keeps Strasbourg in English as a place name. |
+| q5 | ปี 1919 เมือง Boston เคยถูกของเหลวเหนียว ๆ อะไรท่วม? | กากน้ำตาล | Keeps Boston in English and localizes molasses naturally. |
+| q6 | ปี 1814 ย่านหนึ่งใน London เคยถูกเครื่องดื่มอะไรท่วม? | เบียร์ | Keeps London in English for recognition. |
+| q7 | กองทัพออสเตรเลียเคยปราบสัตว์อะไรไม่สำเร็จในปี 1932? | นกอีมู | Short setup, strong reveal. |
+| q8 | ข่าวลวง Great Moon Hoax ปี 1835 อ้างว่าบนดวงจันทร์มีสิ่งมีชีวิตมีปีกแบบไหน? | มนุษย์ค้างคาว | Keeps event name in English and makes answer visual. |
+| q9 | Mary Toft หลอกหมอในปี 1726 ว่าเธอคลอดอะไรออกมา? | กระต่าย | Keeps person's name in English. |
+| q10 | นักดาราศาสตร์ Tycho Brahe เคยใส่อวัยวะเทียมที่ทำจากอะไรบางส่วน? | โลหะ | Keeps proper noun in English. |
+| q11 | บันทึกโบราณเล่าว่า King Mithridates VI กินอะไรทีละนิดเพื่อสร้างภูมิต้านทาน? | ยาพิษ | Uses cautious wording matching the source nuance. |
+| q12 | อังกฤษเคยเก็บภาษีบ้านจากจำนวนอะไร? | หน้าต่าง | Very short and easy to read aloud. |
+| q13 | ช่วง Tulip Mania ในเนเธอร์แลนด์ ผู้คนเก็งกำไรกับอะไรอย่างบ้าคลั่ง? | หัวทิวลิป | Keeps event name in English because it is recognizable. |
+| q14 | มื้อสุดท้ายตามตำนานของกษัตริย์สวีเดนองค์หนึ่งมีขนมครีมอะไรหลายชิ้น? | เซมลา | Keeps safer legendary wording. |
+| q15 | ผู้ชนะมาราธอนโอลิมปิกปี 1904 เคยถูกให้สารกระตุ้นต้องห้ามชื่ออะไร? | สตริกนิน | Answer is a Thai transliteration of the drug. |
+| q16 | ข่าว April Fools ของ BBC ปี 1957 อ้างว่าอาหารอะไรปลูกบนต้นไม้ได้? | สปาเกตตี | Keeps BBC and April Fools recognizable. |
+| q17 | เหตุการณ์ Carrington ปี 1859 ทำให้เจ้าหน้าที่บางคนโดนช็อกจากอะไร? | สายโทรเลข | Keeps event name in English. |
+| q18 | บันทึกยุโรปยุคกลางมีการพิจารณาคดีจำเลยที่ไม่ใช่มนุษย์กลุ่มไหน? | สัตว์ | Preserves cautious scope. |
+| q19 | สงคราม Pig War ปี 1859 เริ่มจากคนอเมริกันยิงสัตว์อะไร? | หมู | Keeps event name in English for clarity. |
+| q20 | ร้านอาหารเร็ว ๆ ใน Pompeii ที่นักโบราณคดีขุดพบเรียกว่าอะไร? | Thermopolia | Keeps the historical term in English/Latin form. |
+| q21 | สัตว์อะไรขึ้นชื่อว่าอึออกมาเป็นก้อนสี่เหลี่ยม? | วอมแบต | Casual Thai, funny answer. |
+| q22 | สัตว์เลี้ยงลูกด้วยนมวางไข่ชนิดไหนเรืองแสงสีเขียวฟ้าใต้แสง UV? | ตุ่นปากเป็ด | Uses common Thai animal name. |
+| q23 | ซาลาแมนเดอร์ชนิดไหนงอกแขน ขากรรไกร และบางส่วนของหัวใจใหม่ได้? | แอกโซลอเติล | Thai transliteration keeps recognition. |
+| q24 | สัตว์ทะเลอะไรใช้แขนเหมือนไม้กระบองต่อยได้แรงสุด ๆ? | กั้งตั๊กแตน | Natural Thai animal name. |
+| q25 | สัตว์หน้าคล้ายปลาไหลชนิดไหนปล่อยเมือกจนเต็มปากนักล่าได้? | ปลาแฮกฟิช | Keeps fish name understandable. |
+| q26 | สัตว์ทะเลอะไรสามารถพ่นอวัยวะภายในบางส่วนออกมาเพื่อป้องกันตัว? | ปลิงทะเล | Direct and weird. |
+| q27 | สัตว์จิ๋วชนิดไหนทนสุญญากาศในอวกาศได้? | ทาร์ดิเกรด | Common Thai transliteration. |
+| q28 | สัตว์อะไรมีเลือดสีฟ้า หัวใจสามดวง และหนีออกจากขวดเก่ง? | หมึกยักษ์ | Naturalizes octopus for Thai play. |
+| q29 | นกอะไรจำหน้าคนได้นานหลายปี? | อีกา | Short and easy. |
+| q30 | นกอะไรเลียนเสียงเลื่อยไฟฟ้าและเสียงชัตเตอร์กล้องได้? | นกไลร์เบิร์ด | Thai transliteration plus `นก`. |
+| q31 | ฉลามชนิดไหนอาจมีชีวิตอยู่ได้นานหลายร้อยปี? | ฉลามกรีนแลนด์ | Natural Thai phrase. |
+| q32 | แมงกะพรุนอะไรรีเซ็ตตัวเองกลับไปวัยเด็กได้เมื่อเครียด? | แมงกะพรุนอมตะ | Keeps the nickname rather than long species name. |
+| q33 | ด้วงอะไรพ่นสารเคมีร้อน ๆ จากก้นได้? | ด้วงบอมบาร์เดียร์ | Funny and concise. |
+| q34 | ปลาอะไรยิงน้ำใส่แมลงให้ตกลงน้ำได้? | ปลาเสือพ่นน้ำ | Common Thai name for archerfish. |
+| q35 | กุ้งอะไรทำให้เหยื่อมึนด้วยฟองอากาศจากก้ามดีด? | กุ้งปืนพก | Natural Thai nickname. |
+| q36 | สัตว์เลี้ยงลูกด้วยนมที่บินได้ชนิดไหนแบ่งอาหารที่สำรอกให้เพื่อนที่หิว? | ค้างคาวแวมไพร์ | Keeps the strange social behavior. |
+| q37 | กบชนิดไหนอยู่รอดหน้าหนาวได้ด้วยการแช่แข็งตัวเองบางส่วน? | กบไม้ | Concise translation. |
+| q38 | สัตว์ทะเลอะไรมีหนังหลวมใต้รักแร้ไว้ใช้เหมือนกระเป๋า? | นากทะเล | Visual and easy to bluff. |
+| q39 | สัตว์กลุ่มไหนตัวผู้เป็นฝ่ายอุ้มท้อง? | ม้าน้ำ | Familiar Thai answer. |
+| q40 | สัตว์โบราณอะไรมีเลือดสีฟ้าที่ใช้ทดสอบความปลอดภัยทางการแพทย์? | แมงดาทะเล | Uses familiar Thai equivalent. |
+| q41 | ปลาปะการังอะไรนอนในถุงเมือกของตัวเอง? | ปลานกแก้ว | Strong weird image. |
+| q42 | สัตว์มีกระเป๋าหน้าท้องอะไรมีลายนิ้วมือคล้ายมนุษย์? | โคอาลา | Natural Thai name. |
+| q43 | สลอธปีนลงจากต้นไม้ประมาณสัปดาห์ละครั้งเพื่อทำอะไร? | อึ | Casual and funny. |
+| q44 | แมลงอะไรถูกฝึกในการทดลองให้จำหน้าคนได้? | ผึ้ง | Short answer. |
+| q45 | ช้างสื่อสารไกล ๆ ด้วยเสียงต่ำแบบไหน? | อินฟราซาวด์ | Technical answer kept concise. |
+| q46 | งายาวของนาร์วาลจริง ๆ แล้วเป็นอวัยวะส่วนไหน? | ฟัน | Strong reveal. |
+| q47 | สัตว์จมูกดาวอะไรดมกลิ่นใต้น้ำด้วยการเป่าฟองอากาศ? | ตุ่นจมูกดาว | Natural Thai phrase. |
+| q48 | ปลาปักเป้าตัวผู้ทำลวดลายวงกลมใต้น้ำจากอะไร? | ทราย | Short and visual. |
+| q49 | เชื้อราที่ทำให้มดปีนขึ้นที่สูงก่อนงอกออกมา มีชื่อเล่นว่าอะไร? | ราซอมบี้มด | Localized nickname for playability. |
+| q50 | แมลงเรืองแสงอะไรสร้างแสงโดยแทบไม่เกิดความร้อน? | หิ่งห้อย | Familiar Thai answer. |
+| q51 | ของเล่นเด็กอะไรเริ่มต้นจากน้ำยาทำความสะอาดวอลเปเปอร์เขม่าถ่าน? | Play-Doh | Keeps brand in English. |
+| q52 | วัสดุกันกระแทกอะไรเคยถูกจินตนาการว่าจะขายเป็นวอลเปเปอร์ลายปุ่ม? | Bubble Wrap | Keeps product name in English. |
+| q53 | ไอติมแท่งอะไรเริ่มจากเด็กคนหนึ่งลืมน้ำโซดากับไม้ไว้ข้างนอก? | Popsicle | Keeps U.S. product term. |
+| q54 | ของเล่นอะไรเกิดจากวิศวกรเรือเห็นสปริงเดินตกจากชั้น? | Slinky | Keeps brand in English. |
+| q55 | ของเล่นยืด ๆ อะไรเกิดจากความพยายามทำยางสังเคราะห์ช่วงสงคราม? | Silly Putty | Keeps brand in English. |
+| q56 | ของใช้สำนักงานอะไรเกิดขึ้นเพราะกาวดันเหนียวไม่พอ? | Post-it Notes | Keeps brand in English. |
+| q57 | ตัวยึดอะไรได้แรงบันดาลใจจากเมล็ดหญ้าเกาะขนหมา? | Velcro | Keeps brand/common product name in English. |
+| q58 | เครื่องครัวอะไรเริ่มจากช็อกโกแลตละลายใกล้อุปกรณ์เรดาร์? | ไมโครเวฟ | Natural Thai common noun. |
+| q59 | กาวอะไรถูกค้นพบตอนนักวิจัยกำลังหาพลาสติกใสทำศูนย์เล็งปืน? | Super Glue | Keeps common product name in English. |
+| q60 | สีย้อมม่วงสังเคราะห์ตัวแรกเกิดจากการพยายามทำยาอะไรแล้วพลาด? | ควินิน | Thai transliteration. |
+| q61 | ของเล่นอะไรได้ชื่อจากเหตุการณ์ที่ Theodore Roosevelt ไม่ยอมยิงหมี? | ตุ๊กตาหมี | Keeps person name in English. |
+| q62 | ของเล่นบินได้อะไรเกี่ยวกับนักศึกษาที่โยนถาดพายเล่น? | Frisbee | Keeps product/sport item in English. |
+| q63 | ของกันหนาวอะไรถูกจดสิทธิบัตรโดยวัยรุ่นจากรัฐ Maine? | ที่ปิดหู | Natural Thai object. |
+| q64 | เครื่องแก้วอบขนมอะไรได้แรงบันดาลใจจากแก้วโคมไฟรถไฟทนความร้อน? | Pyrex | Keeps brand in English. |
+| q65 | ซอส garum ของโรมันโบราณทำจากการหมักอะไร? | ไส้ปลา | Keeps garum in English/Latin form. |
+| q66 | ซีเรียลอาหารเช้าอะไรเริ่มจากอาหารสุขภาพรสจืดแบบตั้งใจ? | คอร์นเฟลกส์ | Familiar Thai transliteration. |
+| q67 | ผลไม้อะไรเคยถูกให้เช่าในอังกฤษเพื่อวางโชว์บนโต๊ะอาหาร? | สับปะรด | Natural Thai answer. |
+| q68 | ถั่วอะไรขึ้นติดอยู่ใต้ผลไม้พอง ๆ? | เม็ดมะม่วงหิมพานต์ | Thai food name. |
+| q69 | กลิ่นวานิลลามาจากฝักเมล็ดของพืชตระกูลไหน? | กล้วยไม้ | Natural Thai answer. |
+| q70 | เครื่องเทศแพงที่สุดในโลกเก็บจากส่วนไหนของดอก crocus? | ยอดเกสร | Keeps crocus in English to avoid long explanation. |
+| q71 | ซอส Worcestershire แบบดั้งเดิมมีปลาอะไรเป็นส่วนผสมลับ? | ปลาแอนโชวี | Keeps sauce name in English. |
+| q72 | อาหาร hakarl ของไอซ์แลนด์ทำจากอะไรหมัก? | ฉลาม | Keeps food name in plain ASCII. |
+| q73 | สเปรดอะไรทำจากสารสกัดยีสต์เข้มข้นจากการต้มเบียร์? | Marmite | Keeps brand in English. |
+| q74 | ขนม marshmallow แบบเก่าตั้งชื่อตามส่วนไหนของต้นไม้? | รากมาร์ชแมลโลว์ | Keeps marshmallow recognizable. |
+| q75 | ชีส casu marzu จาก Sardinia ขึ้นชื่อว่ามีอะไรที่ยังมีชีวิตอยู่ข้างใน? | หนอน | Keeps place/food names in English. |
+| q76 | ในเทศกาล El Colacho ของสเปน คนแต่งเป็นปีศาจต้องกระโดดข้ามอะไร? | เด็กทารก | Matches the user's Thai style example. |
+| q77 | ในเทศกาล La Tomatina ผู้คนขว้างอะไรใส่กัน? | มะเขือเทศ | Keeps festival name in English. |
+| q78 | ที่ Cooper's Hill ผู้เข้าแข่งวิ่งไล่อะไรลงเนินชัน? | ชีส | Keeps event place in English. |
+| q79 | รางวัล Wife Carrying World Championship จ่ายเป็นอะไรตามน้ำหนักคู่แข่ง? | เบียร์ | Keeps event name in English. |
+| q80 | งาน Night of the Radishes ที่ Oaxaca แกะสลักอะไรเป็นงานโชว์? | หัวไชเท้า | Keeps event/place names in English. |
+| q81 | งาน Lopburi Monkey Buffet ของไทยจัดอาหารให้สัตว์อะไร? | ลิงแสม | Local Thai relevance. |
+| q82 | Battle of the Oranges ในอิตาลีใช้อะไรเป็นกระสุน? | ส้ม | Keeps event name in English. |
+| q83 | ฟินแลนด์มีชิงแชมป์โลกการแกล้งเล่นเครื่องดนตรีอะไร? | กีตาร์ลม | Natural Thai for air guitar. |
+| q84 | การแข่ง Naki Sumo ของญี่ปุ่นพยายามทำให้ผู้เข้าแข่งแบบไหนร้องไห้? | เด็กทารก | Keeps event name in English. |
+| q85 | เทศกาล Up Helly Aa ของสกอตแลนด์จบด้วยการเผาเรือจำลองแบบไหน? | เรือไวกิง | Keeps festival name in English. |
+| q86 | เทศกาลที่ Haro ในสเปนกลายเป็นการรบด้วยเครื่องดื่มอะไร? | ไวน์ | Keeps Haro in English. |
+| q87 | ในการแข่ง worm charming ผู้เข้าแข่งพยายามล่ออะไรขึ้นมาจากดิน? | ไส้เดือน | Keeps event phrase in English. |
+| q88 | World Toe Wrestling Championship แข่งกันด้วยอวัยวะส่วนไหน? | นิ้วเท้า | Keeps event name in English. |
+| q89 | เมือง Boryeong เกาหลีใต้ มีเทศกาลฤดูร้อนที่เล่นกับอะไร? | โคลน | Keeps city name in English. |
+| q90 | สงกรานต์ของไทยขึ้นชื่อเรื่องการสู้กันด้วยอะไร? | น้ำ | Familiar Thai context. |
+| q91 | เทศกาลดังประจำปีที่ Albuquerque ทำให้ท้องฟ้าเต็มไปด้วยอะไร? | บอลลูน | Keeps city name in English. |
+| q92 | World Bog Snorkelling ให้ผู้เข้าแข่งลุยผ่านอะไร? | บึงพีต | Keeps event name in English. |
+| q93 | กีฬา Highland games มีการโยนเสาไม้ยาวที่เรียกว่าอะไร? | Caber | Keeps technical sport term in English. |
+| q94 | Nenana Ice Classic พนันกันว่าขาตั้งจะขยับบนอะไรเมื่อไหร่? | น้ำแข็งแม่น้ำ | Keeps event name in English. |
+| q95 | เทศกาล Cheung Chau ของฮ่องกงมีการปีนหอคอยที่คลุมด้วยอะไร? | ซาลาเปา | Naturalizes buns for Thai players. |
+| q96 | Kevin Shelley เคยใช้หัวโหม่งอะไรให้แตก 46 อันใน 1 นาที? | ฝาชักโครก | Matches user style example. |
+| q97 | เจ้าของสถิติ Guinness คนหนึ่งเคยวางอะไรบนหน้าได้ 31 อัน? | ช้อน | Keeps Guinness in English. |
+| q98 | Toby สุนัขพันธุ์ whippet ทำสถิติป๊อปอะไรได้ 100 ลูก? | ลูกโป่ง | Keeps dog name/breed in English. |
+| q99 | Charles Osborne ถือสถิติอาการอะไรที่นานที่สุด? | สะอึก | Keeps person name in English. |
+| q100 | สถิติของเล่นอาบน้ำที่ใหญ่ที่สุดเป็นของยางลอยน้ำรูปอะไร? | เป็ดยาง | Natural Thai answer. |
+| q101 | นกแก้วชื่อ Smudge ทำสถิติถอดอะไรออกจากห่วง? | กุญแจ | Keeps parrot name in English. |
+| q102 | Chad Fell ทำสถิติเป่าฟองยักษ์ด้วยอะไร? | หมากฝรั่ง | Keeps person name in English. |
+| q103 | Pete Glazebrook ทำสถิติปลูกอะไรที่ใหญ่สุด ๆ? | หัวหอม | Keeps person name in English. |
+| q104 | เจ้าของสถิติ Guinness บางคนถูกวัดความยาวของอะไรที่ยาวผิดปกติ? | เล็บมือ | Keeps Guinness in English. |
+| q105 | Suresh Joachim ทำสถิติด้วยการนั่งอะไรไกล 140 ไมล์? | บันไดเลื่อน | Keeps person name in English. |
+| q106 | คอลเลกชันของ Charlotte Lee มีของเล่นอาบน้ำอะไรหลายพันตัว? | เป็ดยาง | Keeps collector name in English. |
+| q107 | Tillman สุนัขบูลด็อกทำสถิติความเร็วด้วยการขี่อะไร? | สเกตบอร์ด | Keeps dog name in English. |
+| q108 | คอลเลกชันของ Val Kolpakov มีหลอดอะไรหลายพันหลอด? | ยาสีฟัน | Keeps collector name in English. |
+| q109 | สุนัขชื่อ Ranmaru เคยมีสถิติอะไรที่ยาวผิดปกติ? | ขนตา | Keeps dog name in English. |
+| q110 | สถิติคลาส Zumba ที่ใหญ่ที่สุดมีอะไรเข้าร่วมเกือบ 13,000 คน? | คนเต้น | Keeps Zumba in English. |
+| q111 | บนสถานีอวกาศ NASA รีไซเคิลปัสสาวะและเหงื่อให้กลายเป็นอะไร? | น้ำดื่ม | Keeps NASA in English. |
+| q112 | นักบินอวกาศ Apollo ต้องใช้ถุงพลาสติกติดกาวแทนอะไร? | ห้องน้ำ | Keeps Apollo in English. |
+| q113 | นักบินอวกาศใส่ Maximum Absorbency Garments ซึ่งพูดง่าย ๆ คืออะไร? | ผ้าอ้อม | Keeps formal garment name in English. |
+| q114 | นักบิน Apollo บอกว่าฝุ่นดวงจันทร์มีกลิ่นเหมือนอะไร? | ดินปืน | Keeps Apollo in English. |
+| q115 | หลังอยู่ในสภาพไร้น้ำหนัก นักบินอวกาศอาจตัวเป็นอย่างไรชั่วคราว? | สูงขึ้น | Natural Thai phrase. |
+| q116 | ดาวเคราะห์ดวงไหนมีหนึ่งวันยาวกว่าหนึ่งปีของมันเอง? | ดาวศุกร์ | Natural Thai planet name. |
+| q117 | ดาวเคราะห์ดวงไหนหมุนเอียงแทบจะนอนตะแคง? | ดาวยูเรนัส | Natural Thai planet name. |
+| q118 | ดวงจันทร์ Titan ของดาวเสาร์มีทะเลสาบที่เต็มไปด้วยอะไรเป็นหลัก? | มีเทน | Keeps Titan in English. |
+| q119 | พระอาทิตย์ตกบนดาวอังคารมักเห็นเป็นสีอะไรใกล้ดวงอาทิตย์? | สีฟ้า | Natural Thai answer. |
+| q120 | ดาวพุธมีอะไรที่กลายเป็นน้ำแข็งซ่อนอยู่ในหลุมเงามืดถาวร? | น้ำ | Short answer avoids over-explaining water ice. |
+| q121 | สิ่งมีชีวิตจิ๋ว Demodex ที่อยู่บนหน้าคนจำนวนมากคืออะไร? | ไร | Keeps scientific name in English. |
+| q122 | ฝุ่นในบ้านจำนวนมากมาจากเศษอะไรของคน? | ผิวหนัง | Natural Thai answer. |
+| q123 | กระเพาะอาหารปกป้องตัวเองจากกรดด้วยชั้นเคลือบอะไร? | เมือก | Natural Thai answer. |
+| q124 | ยีนหนึ่งช่วยกำหนดว่าขี้หูของคุณเปียกหรืออะไร? | แห้ง | Casual and short. |
+| q125 | กระดูกสามชิ้นที่เล็กที่สุดในร่างกายอยู่ตรงส่วนไหน? | หู | Short answer. |
+| q126 | เด็กทารกเริ่มชีวิตด้วยจำนวนอะไรที่มากกว่าผู้ใหญ่? | กระดูก | Natural Thai answer. |
+| q127 | ร่างกายมนุษย์ปล่อยแสงที่ตามองไม่เห็น ต้องใช้อะไรถึงจับได้? | กล้อง | Short and conversational. |
+| q128 | ในวงโคจร เปลวไฟมักลุกเป็นรูปทรงอะไร? | ทรงกลม | Natural Thai answer. |
+| q129 | น้ำที่ลอยในสภาพไร้น้ำหนักจะรวมตัวเป็นรูปทรงอะไร? | ทรงกลม | Natural Thai answer. |
+| q130 | สถานีอวกาศ ISS โคจรรอบโลกประมาณทุกกี่นาที? | 90 นาที | Keeps ISS in English. |
+| q131 | ดาวศุกร์ถูกปกคลุมด้วยเมฆที่ส่วนใหญ่ทำจากกรดอะไร? | กรดซัลฟิวริก | Natural Thai science phrase. |
+| q132 | ตามแบบจำลองบางแบบ ดาวเคราะห์ดวงไหนมีฝนเพชร? | ดาวเนปจูน | Natural Thai planet name. |
+| q133 | ดวงจันทร์ดวงไหนมีไกเซอร์พ่นน้ำออกสู่อวกาศ? | Enceladus | Keeps moon name in English. |
+| q134 | NOAA ใช้ชื่ออะไรเรียกจุดที่ลึกที่สุดในมหาสมุทร? | Challenger Deep | Keeps official proper noun in English. |
+| q135 | สิ่งมีชีวิตยักษ์ Pando ใน Utah ส่วนใหญ่ประกอบด้วยอะไรนับพันต้น? | ลำต้นแอสเพน | Keeps Pando/Utah in English. |
+| q136 | ที่ Point Nemo คนที่อยู่ใกล้ที่สุดมักเป็นคนบนอะไร? | สถานีอวกาศ | Keeps place name in English. |
+| q137 | ปล่องไฟ Darvaza ที่ลุกไหม้ใน Turkmenistan มีฉายาว่าประตูสู่อะไร? | นรก | Keeps place names in English. |
+| q138 | ถ้าวัดจากฐานใต้ทะเล ภูเขาอะไรสูงกว่า Everest? | Mauna Kea | Keeps mountain names in English. |
+| q139 | Lake Hillier ในออสเตรเลียตะวันตกดังเพราะมีสีอะไร? | สีชมพู | Keeps lake name in English. |
+| q140 | Salar de Uyuni ในโบลิเวียเป็นพื้นที่ราบที่ใหญ่ที่สุดของอะไร? | เกลือ | Keeps place name in English. |
+| q141 | ไอซ์แลนด์ขึ้นชื่อว่าแทบไม่มีแมลงกัดชนิดไหนเป็นสัตว์พื้นถิ่น? | ยุง | Natural Thai answer. |
+| q142 | จุดเล็ก ๆ เหนือตัว i หรือ j ภาษาอังกฤษเรียกว่าอะไร? | Tittle | Keeps rare English word. |
+| q143 | สัญลักษณ์อะไรเคยถูกเด็กนักเรียนท่องต่อจากตัว Z? | Ampersand | Keeps symbol name in English. |
+| q144 | คำว่า robot มาจากคำเช็กที่เกี่ยวกับอะไร? | แรงงานบังคับ | Keeps robot in English. |
+| q145 | เทคโนโลยี Bluetooth ตั้งชื่อตามกษัตริย์ที่เกี่ยวข้องกับประเทศอะไร? | เดนมาร์ก | Keeps Bluetooth in English. |
+| q146 | คำว่า spam email เกี่ยวข้องกับสเกตช์ของคณะตลกอะไร? | Monty Python | Keeps comedy group in English. |
+| q147 | คำว่า maverick เดิมหมายถึงสัตว์อะไรที่ยังไม่ถูกตีตรา? | ลูกวัว | Keeps English word being explained. |
+| q148 | เกม Scrabble ตอนแรกพัฒนาขึ้นในชื่ออะไร? | Lexiko | Keeps game names in English. |
+| q149 | Atari เคยฝังตลับเกมขายไม่ออกจำนวนมากไว้ในรัฐไหนของสหรัฐฯ? | New Mexico | Keeps brand/state in English. |
+| q150 | ตอนทดสอบสิทธิบัตร กระดาน Ouija ถูกขอให้สะกดอะไร? | ชื่อเจ้าหน้าที่ | Keeps board name in English. |
 
 ## Excluded Or Rejected Facts
 

@@ -1,6 +1,6 @@
 # Game Rules
 
-Last updated milestone: Milestone 16
+Last updated milestone: Milestone 17
 
 ## Minimum Player Rule
 
@@ -41,8 +41,9 @@ With 4 players:
 
 ### Bluffer
 
-- Sees the question but not the correct answer.
+- Sees the question and correct answer during answering.
 - Submits a believable fake answer.
+- Uses the correct answer as context but should not submit the exact correct answer.
 - Reveals their own submitted answer during guessing when asked.
 - If selected by the Guesser, becomes eliminated for the round.
 
@@ -56,7 +57,7 @@ With 4 players:
    - All remaining players as Bluffers.
 4. Status changes to `answering`.
 5. Truth Teller submits the correct answer.
-6. Bluffers submit fake answers.
+6. Bluffers see the correct answer for context and submit fake answers.
 7. Guesser waits while non-guessers submit.
 8. When all non-guessers submit, status changes to `guessing`.
 9. All non-Guesser answer cards start hidden without roles.
@@ -85,8 +86,8 @@ Milestone 8 implements answer submission for steps 5 through 8. The guessing UI 
 
 ## Question Deck Rules
 
-- The deck contains exactly 150 English bizarre fun-fact questions.
-- Questions are designed to be weird, party-friendly, and easy to bluff.
+- The deck contains exactly 150 Thai-localized bizarre fun-fact questions.
+- Questions are designed to be weird, party-friendly, easy to bluff, and natural to read aloud in Thai.
 - The deck emphasizes strange history, animals, food oddities, festivals, records, science, geography, language, pop culture, sports, and games.
 - Source and confidence notes live in `docs/QUESTION_RESEARCH.md`.
 - Each room tracks `usedQuestionIds`.
@@ -168,6 +169,7 @@ MVP scoring:
 - Guesser cannot guess themselves.
 - Guesser cannot reveal themselves.
 - Truth Teller cannot be the Guesser.
+- Bluffers can see the correct answer during answering, but the Guesser still cannot see it during answering or guessing.
 - If all Bluffers are eliminated, the round ends with the bonus.
 - Refresh should preserve the current player identity through localStorage.
 - Missing `usedQuestionIds`, `lastActivityAt`, or `archivedAt` on older rooms should not break gameplay.

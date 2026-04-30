@@ -1,35 +1,42 @@
 import { HomeForm } from "@/components/HomeForm";
+import { FishMascot } from "@/components/theme/FishMascot";
+import { OceanBackground } from "@/components/theme/OceanBackground";
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-[#f6f8fb] px-5 py-8 text-[#17202f] sm:px-8 lg:px-10">
-      <section className="mx-auto grid min-h-[calc(100vh-4rem)] max-w-6xl items-center gap-8 lg:grid-cols-[1.05fr_0.95fr]">
-        <div className="max-w-2xl">
-          <p className="mb-4 inline-flex rounded-md border border-[#2f9c95]/30 bg-white px-4 py-2 text-sm font-semibold text-[#1d6f6a] shadow-sm">
-            Private bluffing game
-          </p>
-          <h1 className="text-5xl font-bold tracking-normal text-[#121a27] sm:text-6xl">
-            Sounds Fishy
-          </h1>
-          <p className="mt-5 text-xl leading-8 text-[#465365]">
-            Join friends for quick rounds of believable nonsense, hidden truth,
-            and suspiciously confident guesses.
-          </p>
-          <div className="mt-8 grid max-w-xl gap-3 text-sm font-semibold text-[#253247] sm:grid-cols-3">
-            <div className="border-l-4 border-[#2f9c95] bg-white px-4 py-3 shadow-sm">
-              4+ players
+    <OceanBackground>
+      <main className="min-h-screen px-4 py-5 text-[#10243d] sm:px-7 lg:px-10">
+        <section className="mx-auto grid min-h-[calc(100svh-2.5rem)] max-w-6xl items-center gap-5 lg:grid-cols-[1.05fr_0.95fr]">
+          <div className="max-w-2xl">
+            <p className="party-eyebrow mb-3 px-4 py-2 text-sm font-extrabold uppercase tracking-wide">
+              Private ocean bluffing table
+            </p>
+            <div className="flex items-end gap-4">
+              <h1 className="party-title text-4xl font-bold tracking-normal sm:text-5xl lg:text-6xl">
+                Sounds Fishy
+              </h1>
+              <FishMascot className="hidden w-20 sm:block lg:w-24" variant="coral" />
             </div>
-            <div className="border-l-4 border-[#f06c64] bg-white px-4 py-3 shadow-sm">
-              1 truth teller
-            </div>
-            <div className="border-l-4 border-[#3949a3] bg-white px-4 py-3 shadow-sm">
-              Many bluffers
+            <p className="mt-4 max-w-xl text-lg font-semibold leading-7 text-[#173a56] sm:text-xl">
+              Quick rounds of suspicious answers, dramatic reveals, and friends
+              confidently defending nonsense across the table.
+            </p>
+            <div className="mt-5 grid max-w-xl gap-3 text-sm font-extrabold text-[#10243d] sm:grid-cols-3">
+              <div className="game-card-soft border-l-8 border-[#17a88b] px-4 py-3">
+                4+ players
+              </div>
+              <div className="game-card-soft border-l-8 border-[#42c8f2] px-4 py-3">
+                1 truth teller
+              </div>
+              <div className="game-card-soft border-l-8 border-[#ff6b5f] px-4 py-3">
+                Many bluffers
+              </div>
             </div>
           </div>
-        </div>
 
-        <HomeForm />
-      </section>
-    </main>
+          <HomeForm />
+        </section>
+      </main>
+    </OceanBackground>
   );
 }

@@ -1,15 +1,18 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Mali, Noto_Sans_Thai } from "next/font/google";
+import { VolumeControl } from "@/components/theme/VolumeControl";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
+const displayFont = Mali({
+  variable: "--font-fishy-display",
+  subsets: ["latin", "thai"],
+  weight: ["400", "500", "600", "700"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+const bodyFont = Noto_Sans_Thai({
+  variable: "--font-fishy-body",
+  subsets: ["latin", "thai"],
+  weight: ["400", "500", "600", "700"],
 });
 
 export const metadata: Metadata = {
@@ -23,8 +26,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`}>
-      <body className="font-sans antialiased">{children}</body>
+    <html lang="th" className={`${displayFont.variable} ${bodyFont.variable}`}>
+      <body className="font-sans antialiased">
+        {children}
+        <VolumeControl />
+      </body>
     </html>
   );
 }

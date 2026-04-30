@@ -1,6 +1,6 @@
 # QA_AGENT
 
-Last updated milestone: Milestone 16
+Last updated milestone: Milestone 18.3
 
 ## Responsibility
 
@@ -19,6 +19,11 @@ Last updated milestone: Milestone 16
 - Mobile is a secondary sanity check.
 - Milestone 15 manual QA must cover random unused questions, Skip Question, archive, and activity timestamps.
 - Milestone 16 QA must cover deck count, duplicate IDs, duplicate question text, empty answers, source/confidence notes, category distribution, and sample quality review.
+- Milestone 17 QA must cover Thai localization quality, duplicate Thai question text, concise Thai answers, and source/confidence preservation.
+- Milestone 18 QA must cover visual theme readability, desktop viewports, mobile fallback, unchanged gameplay behavior, and optional music controls.
+- Milestone 18.1 QA must confirm no background decoration pushes content down and the music control/form/cards no longer look raw.
+- Milestone 18.2 QA must confirm final visual/audio fixes: bottom decoration, default-on music, sound effects, themed modals, lobby centering, and removed MVP labels.
+- Milestone 18.3 QA must confirm UI sound effects still play when Music is Off and lobby copy buttons stay compact.
 
 ## Constraints
 
@@ -112,7 +117,7 @@ Completed checks:
 - Confirm host can start only with at least 4 players.
 - Confirm all clients move to `answering`.
 - Confirm exactly one Guesser and one Truth Teller.
-- Confirm only Truth Teller sees correct answer.
+- Confirm Truth Teller and Bluffers see correct answer during answering.
 - Confirm Guesser sees waiting state.
 - Confirm lint and build pass.
 - Confirmed route smoke checks and code scans.
@@ -349,10 +354,125 @@ Completed checks:
 - Confirmed `npm.cmd run build` passes.
 - Confirmed `npm.cmd audit --audit-level=moderate` reports 0 vulnerabilities.
 
+### Post-Milestone 16 Scoped Answer Visibility Adjustment
+
+Planned checks:
+
+- Confirm Truth Teller sees the correct answer.
+- Confirm Bluffers also see the correct answer during answering.
+- Confirm Bluffer input remains empty and rejects the exact correct answer.
+- Confirm Guesser does not see the correct answer.
+- Confirm guessing still hides roles and hidden answers until owners reveal.
+- Confirm result still reveals everything normally.
+
+Completed checks:
+
+- Updated `docs/TEST_PLAN.md` with the revised role-visibility expectations.
+- Confirmed `npm.cmd run lint` passes.
+- Confirmed `npm.cmd run build` passes.
+- Confirmed `npm.cmd audit --audit-level=moderate` reports 0 vulnerabilities.
+
+### Milestone 17
+
+Planned checks:
+
+- Confirm `lib/questions.ts` contains exactly 150 questions.
+- Confirm IDs remain unique and sequential from `q1` through `q150`.
+- Confirm Thai question text is unique.
+- Confirm Thai answers are non-empty and concise.
+- Confirm proper nouns are preserved where useful for Thai players.
+- Confirm `docs/QUESTION_RESEARCH.md` preserves English source/confidence information and includes Thai question/answer rows.
+- Confirm lint, build, and audit pass.
+
+Completed checks:
+
+- Added Milestone 17 Thai deck validation steps to `docs/TEST_PLAN.md`.
+- Confirmed `npm.cmd run lint` passes.
+- Confirmed `npm.cmd run build` passes.
+- Confirmed `npm.cmd audit --audit-level=moderate` reports 0 vulnerabilities.
+
+### Milestone 18
+
+Planned checks:
+
+- Confirm home, lobby, answering, guessing, result, and archived-room screens show the new playful fish/ocean theme.
+- Confirm desktop viewports 1366x768, 1440x900, and 1920x1080 remain readable.
+- Confirm mobile remains usable.
+- Confirm AnswerPhase role visibility remains unchanged: Truth Teller and Bluffers see the correct answer; Guesser does not.
+- Confirm GuessingPhase roles remain hidden and owner-only reveal still works.
+- Confirm ResultPhase and archived room remain readable.
+- Confirm music starts only after user interaction, volume changes, mute works, preference persists, and no loud autoplay occurs.
+- Confirm lint, build, and audit pass.
+
+Completed checks:
+
+- Added Milestone 18 visual/audio QA steps to `docs/TEST_PLAN.md`.
+- Confirmed `npm.cmd run lint` passes.
+- Confirmed `npm.cmd run build` passes.
+- Confirmed `npm.cmd audit --audit-level=moderate` reports 0 vulnerabilities.
+
+### Milestone 18.1
+
+Planned checks:
+
+- Confirm no large fish appears before actual content at 1366x768.
+- Confirm home title, description, and Create/Join card are visible in the first viewport.
+- Confirm the ocean background is colorful and non-white without overpowering text.
+- Confirm inputs, buttons, cards, game panels, and hidden answer cards look intentionally styled.
+- Confirm music control is an obvious bottom-right floating panel with styled button and slider.
+- Confirm gameplay behavior remains unchanged.
+- Confirm lint, build, and audit pass.
+
+Completed checks:
+
+- Added Milestone 18.1 manual review steps to `docs/TEST_PLAN.md`.
+- Confirmed `npm.cmd run lint` passes.
+- Confirmed `npm.cmd run build` passes.
+- Confirmed `npm.cmd audit --audit-level=moderate` reports 0 vulnerabilities.
+
+### Milestone 18.2
+
+Planned checks:
+
+- Confirm bottom decoration no longer looks like broken repeated seaweed.
+- Confirm there are no visible MVP labels in the UI.
+- Confirm music defaults visually to On and respects saved mute/volume.
+- Confirm UI sound effects play only when audio is on.
+- Confirm Skip Question and End Game use themed modals instead of browser confirm.
+- Confirm lobby content is vertically centered.
+- Confirm no gameplay behavior changed.
+- Confirm lint, build, and audit pass.
+
+Completed checks:
+
+- Added Milestone 18.2 manual review steps to `docs/TEST_PLAN.md`.
+- Confirmed `window.confirm` no longer appears in component/theme code.
+- Confirmed `npm.cmd run lint` passes.
+- Confirmed `npm.cmd run build` passes.
+- Confirmed `npm.cmd audit --audit-level=moderate` reports 0 vulnerabilities.
+
+### Milestone 18.3
+
+Planned checks:
+
+- Confirm UI sounds play from button actions when Music is Off.
+- Confirm background music remains controlled by Music On/Off.
+- Confirm copy buttons read `Copy Code` and `Copy Link`.
+- Confirm copy labels do not wrap at desktop widths.
+- Confirm copied feedback says only `Copied`.
+- Confirm lint, build, and audit pass.
+
+Completed checks:
+
+- Added Milestone 18.3 manual checks to `docs/TEST_PLAN.md`.
+- Confirmed `npm.cmd run lint` passes.
+- Confirmed `npm.cmd run build` passes.
+- Confirmed `npm.cmd audit --audit-level=moderate` reports 0 vulnerabilities.
+
 ## Open Questions
 
 - None.
 
 ## Last Updated Milestone
 
-Milestone 16
+Milestone 18.3
